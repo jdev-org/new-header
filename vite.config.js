@@ -14,7 +14,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        entryFileNames: `assets/_header.js`,
+        entryFileNames: `assets/header.js`,
       },
     },
   },
