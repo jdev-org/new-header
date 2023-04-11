@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from 'node:url'
-
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
@@ -15,6 +14,16 @@ export default defineConfig({
     rollupOptions: {
       output: {
         entryFileNames: `assets/header.js`,
+      },
+    },
+  },
+  server: {
+    proxy: {
+      '^/(whoami|login|logout)': {
+        // FIXME: replace this with demo.georchestra.org when it uses the gateway
+        target:
+          'https://gateway.mel.integration.apps.gs-fr-prod.camptocamp.com',
+        changeOrigin: true,
       },
     },
   },
