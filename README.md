@@ -2,6 +2,10 @@
 
 The geOrchestra header is built using Vue and published as a web component called `geor-header`.
 
+## Requirements
+
+The `geor-header` component currently requires the [georchestra-gateway](https://github.com/georchestra/georchestra-gateway). It will **not** work with the default security proxy.
+
 ## Usage
 
 The web component is distributed as a static JS file on the `dist` branch of this repository. It can easily be accessed using a service such as JsDelivr with the following url:

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue'
-import { affectRoles, getUserDetails } from './auth'
-import type { User, AdminMap } from './auth'
+import { computed, onMounted, reactive } from 'vue'
+import { getUserDetails } from './auth'
+import type { User } from './auth'
 import UserIcon from './ui/UserIcon.vue'
+
 const props = defineProps<{
   lang?: string
   activeApp?: string
@@ -10,12 +11,15 @@ const props = defineProps<{
 
 const state = reactive({
   user: null as null | User,
-  adminMap: {} as AdminMap,
 })
+
+const isAnonymous = computed(() => !state.user || state.user.anonymous)
+const isAdmin = computed(() => state.user?.adminRoles?.admin)
+const adminRoles = computed(() => state.user?.adminRoles)
+
 onMounted(() => {
   getUserDetails().then(user => {
     state.user = user
-    state.adminMap = affectRoles(user)
   })
 })
 </script>
@@ -23,24 +27,24 @@ onMounted(() => {
   <header class="host">
     <div
       class="admin pr-8 items-center bg-primary/20 text-secondary/80 flex justify-end gap-5 text-sm font-sans"
-      v-if="state.adminMap?.admin"
+      v-if="isAdmin"
     >
       <div class="py-1 bg-secondary/80 text-slate-100 px-8">Administration</div>
       <a
         href="/geonetwork/srv/fre/admin.console"
         class="catalog py-1 hover:text-secondary/60"
-        v-if="state.adminMap.catalog"
+        v-if="adminRoles?.catalog"
         >catalog</a
       >
       <a
         href="/mapstore/#/admin"
-        v-if="state.adminMap.mapstore"
+        v-if="adminRoles?.viewer"
         class="py-1 hover:text-secondary/60"
         >mapstore</a
       >
       <a
         href="/console/manager"
-        v-if="state.adminMap.console"
+        v-if="adminRoles?.console"
         class="console py-1 hover:text-secondary/60"
         >console</a
       >
@@ -62,20 +66,18 @@ onMounted(() => {
           <a class="nav-item" href="/mapstore/">Viewer</a>
           <a class="nav-item" href="/mapstore/#/home">Maps</a>
           <a class="nav-item" href="/geoserver/">Services</a>
-          <a v-if="state.user?.username" class="nav-item" href="/import/"
-            >Import</a
-          >
+          <a v-if="!isAnonymous" class="nav-item" href="/import/">Import</a>
         </nav>
       </div>
       <div class="mr-8 flex justify-center items-center">
-        <div v-if="state.user?.username" class="flex gap-4">
+        <div v-if="!isAnonymous" class="flex gap-4 items-baseline">
           <a class="link-btn" href="/console/account/userdetails">
             <UserIcon class="font-bold text-3xl inline-block mr-4"></UserIcon>
-            <span>{{ state.user.username }}</span></a
+            <span>{{ state.user?.username }}</span></a
           >
           <a class="link-btn" href="/logout">logout</a>
         </div>
-        <button v-else type="button" class="btn">login</button>
+        <a v-else class="btn" href="/login">login</a>
       </div>
     </div>
   </header>
