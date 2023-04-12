@@ -1,82 +1,62 @@
-const AUTH_API_URL = '/userdetails'
+const AUTH_API_URL = '/whoami'
 
 type KNOWN_ROLES =
   | 'ROLE_SUPERUSER'
+  | 'ROLE_ORGADMIN'
   | 'ROLE_MAPSTORE_ADMIN'
   | 'ROLE_USER'
   | 'ROLE_ADMINISTRATOR'
   | 'ROLE_EXTRACTORAPP'
   | 'ROLE_GN_ADMIN'
   | 'ROLE_EMAILPROXY'
-  | string
+  | 'ROLE_ANONYMOUS'
 
-export interface User {
-  roles: KNOWN_ROLES[]
-  username: string
+interface WhoAmIResponse {
+  GeorchestraUser: {
+    roles: KNOWN_ROLES[]
+    username: string
+  }
 }
 
-export interface AdminMap {
+export interface User {
+  username: string
+  anonymous: boolean
+  adminRoles: AdminRoles | null
+}
+
+export interface AdminRoles {
   admin: boolean
   console: boolean
   catalog: boolean
-  mapstore: boolean
-}
-
-const userStub: User = {
-  roles: [
-    'ROLE_SUPERUSER',
-    'ROLE_MAPSTORE_ADMIN',
-    'ROLE_USER',
-    'ROLE_ADMINISTRATOR',
-    'ROLE_EXTRACTORAPP',
-    'ROLE_GN_ADMIN',
-    'ROLE_EMAILPROXY',
-  ],
-  username: 'testadmin',
+  viewer: boolean
 }
 
 export async function getUserDetails(): Promise<User> {
-  return new Promise(resolve => resolve(userStub))
-  // return fetch(AUTH_API_URL).then(response => response.json())
+  return fetch(AUTH_API_URL)
+    .then(response => response.json())
+    .then((json: WhoAmIResponse) => {
+      const user = json.GeorchestraUser
+      const roles = user.roles
+      return {
+        username: user.username,
+        anonymous: roles.indexOf('ROLE_ANONYMOUS') > -1,
+        adminRoles: getAdminRoles(roles),
+      }
+    })
 }
 
-export function affectRoles(user: User): AdminMap {
-  return user.roles.reduce(
-    (roles, role) => {
-      switch (role) {
-        case 'ROLE_SUPERUSER':
-        case 'ROLE_ORGADMIN':
-          return {
-            ...roles,
-            admin: true,
-            console: true,
-          }
-        case 'ROLE_GN_ADMIN':
-          return {
-            ...roles,
-            admin: true,
-            catalog: true,
-          }
-        case 'ROLE_ADMINISTRATOR':
-          return {
-            ...roles,
-            admin: true,
-          }
-        case 'ROLE_MAPSTORE_ADMIN':
-          return {
-            ...roles,
-            admin: true,
-            mapstore: true,
-          }
-        default:
-          return roles
-      }
-    },
-    {
-      admin: false,
-      console: false,
-      catalog: false,
-      mapstore: false,
-    } as AdminMap
-  )
+export function getAdminRoles(roles: KNOWN_ROLES[]): AdminRoles | null {
+  const superUser = roles.indexOf('ROLE_SUPERUSER') > -1
+  const console = superUser || roles.indexOf('ROLE_ORGADMIN') > -1
+  const catalog = superUser || roles.indexOf('ROLE_GN_ADMIN') > -1
+  const viewer = superUser || roles.indexOf('ROLE_MAPSTORE_ADMIN') > -1
+  const admin =
+    console || catalog || viewer || roles.indexOf('ROLE_ADMINISTRATOR') > -1
+  if (!admin) return null
+  return {
+    admin,
+    console,
+    catalog,
+    viewer,
+  }
 }
