@@ -19,10 +19,8 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '^/(whoami|login|logout)': {
-        // FIXME: replace this with demo.georchestra.org when it uses the gateway
-        target:
-          'https://gateway.mel.integration.apps.gs-fr-prod.camptocamp.com',
+      '^/(whoami|\\?login|logout)': {
+        target: 'https://mel.integration.apps.gs-fr-prod.camptocamp.com',
         changeOrigin: true,
       },
     },

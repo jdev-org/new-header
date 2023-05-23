@@ -17,6 +17,13 @@ const isAnonymous = computed(() => !state.user || state.user.anonymous)
 const isAdmin = computed(() => state.user?.adminRoles?.admin)
 const adminRoles = computed(() => state.user?.adminRoles)
 
+const loginUrl = computed(() => {
+  const current = new URL(window.location.href)
+  current.searchParams.set('login', '')
+  return current.toString()
+})
+const logoutUrl = computed(() => '/logout')
+
 onMounted(() => {
   getUserDetails().then(user => {
     state.user = user
@@ -75,9 +82,9 @@ onMounted(() => {
             <UserIcon class="font-bold text-3xl inline-block mr-4"></UserIcon>
             <span>{{ state.user?.username }}</span></a
           >
-          <a class="link-btn" href="/logout">logout</a>
+          <a class="link-btn" :href="logoutUrl">logout</a>
         </div>
-        <a v-else class="btn" href="/login">login</a>
+        <a v-else class="btn" :href="loginUrl">login</a>
       </div>
     </div>
   </header>
