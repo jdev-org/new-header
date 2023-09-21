@@ -7,6 +7,9 @@ import UserIcon from './ui/UserIcon.vue'
 const props = defineProps<{
   lang?: string
   activeApp?: string
+  //legacy option : using old iframe option
+  legacy_url?: string
+  legacy_style?: string
 }>()
 
 const state = reactive({
@@ -31,7 +34,13 @@ onMounted(() => {
 })
 </script>
 <template>
-  <header class="host">
+  <div v-if="props.legacy_url">
+    <iframe
+      v-bind:src="props.legacy_url"
+      v-bind:style="props.legacy_style"
+    ></iframe>
+  </div>
+  <header v-if="!props.legacy_url" class="host">
     <div
       class="admin pr-8 items-center bg-primary/20 text-secondary/80 flex justify-end gap-5 text-sm font-sans"
       v-if="isAdmin"

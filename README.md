@@ -24,6 +24,12 @@ To include it in an existing application:
 
 Note: unlike with iframes there is no need to specify a height, the component will decide of its own size and "push" the content around accordingly.
 
+Iframe can still be set with defining `legacy_url` attribute, style can also be set with `legacy_style` attribute :
+  ```html
+  <geor-header legacy_url="myheader.com" legacy_style="width: 100%"></geor-header>
+  ```
+ 
+
 ## Development
 
 On every new commit on main the `header.js` file on the `dist` branch is updated automatically.
