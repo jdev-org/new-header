@@ -50,7 +50,7 @@ onMounted(() => {
         >mapstore</a
       >
       <a
-        href="/console/manager"
+        href="/console/manager/home"
         v-if="adminRoles?.console"
         class="console py-1 hover:text-secondary/60"
         >console</a
