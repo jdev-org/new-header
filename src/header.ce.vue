@@ -72,7 +72,7 @@ onMounted(() => {
           <a class="nav-item" href="/datahub/">Data</a>
           <a class="nav-item" href="/mapstore/">Viewer</a>
           <a class="nav-item" href="/mapstore/#/home">Maps</a>
-          <a class="nav-item" href="/geoserver/">Services</a>
+          <a class="nav-item" href="/geoserver/web/">Services</a>
           <a v-if="!isAnonymous" class="nav-item" href="/import/">Import</a>
         </nav>
       </div>
