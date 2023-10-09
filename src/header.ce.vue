@@ -8,8 +8,8 @@ const props = defineProps<{
   lang?: string
   activeApp?: string
   //legacy option : using old iframe option
-  legacy_url?: string
-  legacy_style?: string
+  legacyUrl?: string
+  legacyStyle?: string
 }>()
 
 const state = reactive({
@@ -34,13 +34,13 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div v-if="props.legacy_url">
+  <div v-if="props.legacyUrl">
     <iframe
-      v-bind:src="props.legacy_url"
-      v-bind:style="props.legacy_style"
+      v-bind:src="props.legacyUrl"
+      v-bind:style="props.legacyStyle"
     ></iframe>
   </div>
-  <header v-if="!props.legacy_url" class="host">
+  <header v-if="!props.legacyUrl" class="host">
     <div
       class="admin pr-8 items-center bg-primary/20 text-secondary/80 flex justify-end gap-5 text-sm font-sans"
       v-if="isAdmin"
