@@ -28,6 +28,15 @@ Iframe can still be set with defining `legacy-url` attribute, style can also be 
   ```html
   <geor-header legacy-url="myheader.com" legacy-style="width: 100%"></geor-header>
   ```
+
+Attributes available :
+
+| Attribute    | Description                                                                  | Example                                             |
+|--------------|------------------------------------------------------------------------------|-----------------------------------------------------|
+| lang         | Used to force header language (default value : en)                           | `<geor-header lang='de'>`                           |
+| logo-url     | Use this attribute to set the logo for the new header (not legacy one)       | `<geor-header logo-url='https://linktomylogo.com'>` |
+| legacy-url   | Legacy URL: if set, activates iframe with src attribute pointing to this URL |  `<geor-header legacy-url="myheader.com" legacy-style="width: 100%"></geor-header>` |
+| legacy-style | if legacy URL is set, adds this style to iframe                              |  `<geor-header legacy-url="myheader.com" legacy-style="width: 100%"></geor-header>` |
  
 
 ## Development

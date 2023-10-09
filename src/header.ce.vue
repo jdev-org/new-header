@@ -7,6 +7,7 @@ import UserIcon from './ui/UserIcon.vue'
 const props = defineProps<{
   lang?: string
   activeApp?: string
+  logoUrl?: string
   //legacy option : using old iframe option
   legacyUrl?: string
   legacyStyle?: string
@@ -15,6 +16,7 @@ const props = defineProps<{
 const state = reactive({
   user: null as null | User,
   mobileMenuOpen: false,
+  lang3: props.lang,
 })
 
 const isAnonymous = computed(() => !state.user || state.user.anonymous)
@@ -32,7 +34,27 @@ function toggleMenu(): void {
   state.mobileMenuOpen = !state.mobileMenuOpen
 }
 
+const LANG_2_TO_3_MAPPER: { [index: string]: any } = {
+  en: 'eng',
+  nl: 'dut',
+  fr: 'fre',
+  de: 'ger',
+  ko: 'kor',
+  es: 'spa',
+  cs: 'cze',
+  ca: 'cat',
+  fi: 'fin',
+  is: 'ice',
+  it: 'ita',
+  pt: 'por',
+  ru: 'rus',
+  zh: 'chi',
+  sk: 'slo',
+}
+
 onMounted(() => {
+  state.lang3 =
+    LANG_2_TO_3_MAPPER[props.lang || navigator.language.substring(0, 2) || 'en']
   getUserDetails().then(user => {
     state.user = user
   })
@@ -52,7 +74,7 @@ onMounted(() => {
     >
       <div class="py-1 bg-secondary/80 text-slate-100 px-8">Administration</div>
       <a
-        href="/geonetwork/srv/fre/admin.console"
+        :href="`/geonetwork/srv/${state.lang3}/admin.console`"
         class="catalog py-1 hover:text-secondary/60"
         v-if="adminRoles?.catalog"
         >catalog</a
@@ -73,11 +95,11 @@ onMounted(() => {
         >analytics</a
       >
     </div>
-    <div class="h-20 justify-between text-slate-600 sm:flex hidden">
+    <div class="justify-between text-slate-600 sm:flex hidden h-full">
       <div class="flex">
         <a href="/" class="flex justify-center items-center px-8 bg-primary/10">
           <img
-            src="https://www.georchestra.org/public/georchestra-logo.svg"
+            :src="props.logoUrl || '/static/logo.png'"
             alt="geOrchestra logo"
             class="w-32"
           />
@@ -110,7 +132,7 @@ onMounted(() => {
           class="grow flex justify-start items-center py-3"
           @click="toggleMenu"
         >
-          <div class="inline-flex items-center rounded-full">
+          <span class="inline-flex items-center rounded-full">
             <svg
               v-if="state.mobileMenuOpen"
               xmlns="http://www.w3.org/2000/svg"
@@ -134,11 +156,11 @@ onMounted(() => {
               />
             </svg>
             <img
-              src="https://www.georchestra.org/public/georchestra-logo.svg"
+              :src="props.logoUrl || '/static/logo.png'"
               alt="geOrchestra logo"
               class="w-24 ml-4"
             />
-          </div>
+          </span>
         </button>
         <div class="flex justify-center items-center">
           <div v-if="!isAnonymous" class="flex gap-4 items-baseline">
@@ -154,9 +176,9 @@ onMounted(() => {
 
       <div
         :class="[
-          { 'opacity-100': state.mobileMenuOpen },
-          { 'opacity-0': !state.mobileMenuOpen },
-          'w-full border-b-2 duration-300 transition-all ease-in-out',
+          { 'opacity-100 border-b-2': state.mobileMenuOpen },
+          { 'opacity-0 border-b-0': !state.mobileMenuOpen },
+          'w-full duration-300 transition-opacity ease-in-out',
         ]"
       >
         <nav class="flex flex-col font-semibold" v-if="state.mobileMenuOpen">
@@ -181,10 +203,7 @@ onMounted(() => {
 @tailwind utilities;
 
 .host {
-  line-height: 1.5;
   -webkit-text-size-adjust: 100%;
-  -moz-tab-size: 4;
-  tab-size: 4;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
