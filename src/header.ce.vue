@@ -70,7 +70,7 @@ onMounted(() => {
   </div>
   <header v-if="!props.legacyUrl" class="host">
     <div
-      class="admin pr-8 items-center bg-primary/20 text-secondary/80 flex justify-end gap-5 text-sm font-sans"
+      class="admin pr-8 items-center bg-primary/20 text-secondary/80 hidden sm:flex justify-end gap-5 text-sm font-sans"
       v-if="isAdmin"
     >
       <div class="py-1 bg-secondary/80 text-slate-100 px-8">Administration</div>
