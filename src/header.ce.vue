@@ -3,6 +3,7 @@ import { computed, onMounted, reactive } from 'vue'
 import { getUserDetails } from './auth'
 import type { User } from './auth'
 import UserIcon from './ui/UserIcon.vue'
+import GeorchestraLogo from './ui/GeorchestraLogo.vue'
 
 const props = defineProps<{
   lang?: string
@@ -100,10 +101,12 @@ onMounted(() => {
       <div class="flex">
         <a href="/" class="flex justify-center items-center px-8 bg-primary/10">
           <img
-            :src="props.logoUrl || '/static/logo.png'"
+            v-if="props.logoUrl"
+            :src="props.logoUrl"
             alt="geOrchestra logo"
             class="w-32"
           />
+          <GeorchestraLogo v-else class="w-32"></GeorchestraLogo>
         </a>
         <nav class="flex justify-center items-center font-semibold">
           <a class="nav-item" href="/datahub/">Data</a>
@@ -157,10 +160,12 @@ onMounted(() => {
               />
             </svg>
             <img
-              :src="props.logoUrl || '/static/logo.png'"
+              v-if="props.logoUrl"
+              :src="props.logoUrl"
               alt="geOrchestra logo"
               class="w-24 ml-4"
             />
+            <GeorchestraLogo v-else class="w-32"></GeorchestraLogo>
           </span>
         </button>
         <div class="flex justify-center items-center">
