@@ -54,7 +54,8 @@ const LANG_2_TO_3_MAPPER: { [index: string]: any } = {
 
 onMounted(() => {
   state.lang3 =
-    LANG_2_TO_3_MAPPER[props.lang || navigator.language.substring(0, 2) || 'en']
+    LANG_2_TO_3_MAPPER[props.lang || navigator.language.substring(0, 2)] ||
+    'eng'
   getUserDetails().then(user => {
     state.user = user
   })
