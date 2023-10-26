@@ -96,7 +96,7 @@ onMounted(() => {
         >analytics</a
       >
     </div>
-    <div class="justify-between text-slate-600 sm:flex hidden h-full">
+    <div class="justify-between bg-white text-slate-600 sm:flex hidden h-full">
       <div class="flex">
         <a href="/" class="flex justify-center items-center px-8 bg-primary/10">
           <img
@@ -179,18 +179,14 @@ onMounted(() => {
         :class="[
           { 'opacity-100 border-b-2': state.mobileMenuOpen },
           { 'opacity-0 border-b-0': !state.mobileMenuOpen },
-          'w-full duration-300 transition-opacity ease-in-out',
+          'absolute z-[1000] bg-white w-full duration-300 transition-opacity ease-in-out',
         ]"
       >
         <nav class="flex flex-col font-semibold" v-if="state.mobileMenuOpen">
-          <a class="nav-item border-b leading-[3]" href="/datahub/">Data</a>
-          <a class="nav-item border-b leading-[3]" href="/mapstore/">Viewer</a>
-          <a class="nav-item border-b leading-[3]" href="/mapstore/#/home"
-            >Maps</a
-          >
-          <a class="nav-item border-b leading-[3]" href="/geoserver/"
-            >Services</a
-          >
+          <a class="nav-item" href="/datahub/">Data</a>
+          <a class="nav-item" href="/mapstore/">Viewer</a>
+          <a class="nav-item" href="/mapstore/#/home">Maps</a>
+          <a class="nav-item" href="/geoserver/">Services</a>
           <a v-if="!isAnonymous" class="nav-item" href="/import/">Import</a>
         </nav>
       </div>
@@ -213,7 +209,7 @@ onMounted(() => {
 
 @layer components {
   .nav-item {
-    @apply px-6 hover:bg-primary/70 hover:text-slate-100 transition-colors leading-[5];
+    @apply px-6 hover:bg-primary/70 hover:text-slate-100 transition-colors leading-[3] sm:leading-[5] border-b sm:border-none;
   }
   .btn {
     @apply px-4 py-2 text-slate-100 bg-primary rounded hover:bg-primary/70 transition-colors;
