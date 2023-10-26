@@ -131,43 +131,43 @@ onMounted(() => {
       <div
         class="h-12 inline-flex items-center justify-start align-middle px-6 py-8 shrink-0 w-full bg-primary/10"
       >
-        <button
-          type="button"
-          class="grow flex justify-start items-center py-3"
-          @click="toggleMenu"
-        >
+        <div class="grow flex justify-start items-center py-3">
           <span class="inline-flex items-center rounded-full">
-            <svg
-              v-if="state.mobileMenuOpen"
-              xmlns="http://www.w3.org/2000/svg"
-              height="24"
-              viewBox="0 -960 960 960"
-              width="24"
-            >
-              <path
-                d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+            <button type="button" @click="toggleMenu">
+              <svg
+                v-if="state.mobileMenuOpen"
+                xmlns="http://www.w3.org/2000/svg"
+                height="24"
+                viewBox="0 -960 960 960"
+                width="24"
+              >
+                <path
+                  d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+                />
+              </svg>
+              <svg
+                v-else
+                xmlns="http://www.w3.org/2000/svg"
+                height="24"
+                viewBox="0 -960 960 960"
+                width="24"
+              >
+                <path
+                  d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
+                />
+              </svg>
+            </button>
+            <a href="/">
+              <img
+                v-if="props.logoUrl"
+                :src="props.logoUrl"
+                alt="geOrchestra logo"
+                class="w-24 ml-4"
               />
-            </svg>
-            <svg
-              v-else
-              xmlns="http://www.w3.org/2000/svg"
-              height="24"
-              viewBox="0 -960 960 960"
-              width="24"
-            >
-              <path
-                d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
-              />
-            </svg>
-            <img
-              v-if="props.logoUrl"
-              :src="props.logoUrl"
-              alt="geOrchestra logo"
-              class="w-24 ml-4"
-            />
-            <GeorchestraLogo v-else class="w-32"></GeorchestraLogo>
+              <GeorchestraLogo v-else class="w-32"></GeorchestraLogo>
+            </a>
           </span>
-        </button>
+        </div>
         <div class="flex justify-center items-center">
           <div v-if="!isAnonymous" class="flex gap-4 items-baseline">
             <a class="link-btn" href="/console/account/userdetails">
