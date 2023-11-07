@@ -5,44 +5,11 @@
     viewBox="0 0 76.919907 26.149284"
     version="1.1"
     id="svg855"
-    inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-    sodipodi:docname="georchestra-logo.svg"
-    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:svg="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMinYMin meet"
   >
-    <sodipodi:namedview
-      id="namedview857"
-      pagecolor="#ffffff"
-      bordercolor="#666666"
-      borderopacity="1.0"
-      inkscape:pageshadow="2"
-      inkscape:pageopacity="0.0"
-      inkscape:pagecheckerboard="0"
-      inkscape:document-units="mm"
-      showgrid="false"
-      fit-margin-top="2"
-      fit-margin-right="2"
-      fit-margin-bottom="2"
-      fit-margin-left="2"
-      inkscape:zoom="4.0920134"
-      inkscape:cx="120.47859"
-      inkscape:cy="47.775992"
-      inkscape:window-width="2400"
-      inkscape:window-height="1271"
-      inkscape:window-x="2391"
-      inkscape:window-y="-9"
-      inkscape:window-maximized="1"
-      inkscape:current-layer="layer1"
-    />
-    <defs id="defs852" />
-    <g
-      inkscape:label="Calque 1"
-      inkscape:groupmode="layer"
-      id="layer1"
-      transform="translate(-73.097929,-135.79112)"
-    >
+    <g id="layer1" transform="translate(-73.097929,-135.79112)">
       <g
         id="g53648"
         transform="matrix(1.1048988,0,0,1.1048988,-54.141498,96.632368)"
@@ -58,9 +25,6 @@
             paint-order: markers stroke fill;
           "
           d="m 126.99257,37.251152 a 10.023325,10.023325 0 0 0 -10.0231,10.023355 10.023325,10.023325 0 0 0 10.0231,10.023083 10.023325,10.023325 0 0 0 9.62187,-7.232846 3.0318022,3.5371027 0 0 1 -2.01469,-3.330589 3.0318022,3.5371027 0 0 1 1.70117,-3.175791 10.023325,10.023325 0 0 0 -9.30835,-6.307212 z"
-          inkscape:export-filename="C:\Users\Agathe\Desktop\georchestra_univers.png"
-          inkscape:export-xdpi="200"
-          inkscape:export-ydpi="200"
         />
         <path
           id="path20251-5-9-8-2"
@@ -73,9 +37,6 @@
             paint-order: markers stroke fill;
           "
           d="m 138.54037,41.724815 a 4.988567,4.988567 0 0 0 -4.9887,4.988712 4.988567,4.988567 0 0 0 4.9887,4.98844 4.988567,4.988567 0 0 0 4.98844,-4.98844 4.988567,4.988567 0 0 0 -4.98844,-4.988712 z m 0,2.683748 a 2.3048444,2.3048444 0 0 1 2.30472,2.304964 2.3048444,2.3048444 0 0 1 -2.30472,2.304704 2.3048444,2.3048444 0 0 1 -2.30496,-2.304704 2.3048444,2.3048444 0 0 1 2.30496,-2.304964 z"
-          inkscape:export-filename="C:\Users\Agathe\Desktop\georchestra_univers.png"
-          inkscape:export-xdpi="200"
-          inkscape:export-ydpi="200"
         />
         <g
           aria-label="ge     rchestra"
