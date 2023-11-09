@@ -4,12 +4,18 @@ import { getUserDetails } from './auth'
 import type { User } from './auth'
 import UserIcon from './ui/UserIcon.vue'
 import GeorchestraLogo from './ui/GeorchestraLogo.vue'
+import CatalogIcon from '@/ui/CatalogIcon.vue'
+import MapIcon from '@/ui/MapIcon.vue'
+import ChartPieIcon from '@/ui/ChartPieIcon.vue'
+import UsersIcon from '@/ui/UsersIcon.vue'
+import ChevronDownIcon from '@/ui/ChevronDownIcon.vue'
 
 const props = defineProps<{
   lang?: string
   activeApp?: string
   logoUrl?: string
   //legacy option : using old iframe option
+  legacyHeader: boolean
   legacyUrl?: string
   style?: string
 }>()
@@ -63,11 +69,11 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div v-if="props.legacyUrl">
+  <div v-if="props.legacyHeader">
     <iframe v-bind:src="props.legacyUrl" v-bind:style="props.style"></iframe>
   </div>
   <header
-    v-if="!props.legacyUrl"
+    v-if="!props.legacyHeader"
     class="host h-full"
     v-bind:style="props.style"
   >
@@ -89,114 +95,81 @@ onMounted(() => {
           ></GeorchestraLogo>
         </a>
         <nav class="flex justify-center items-center font-semibold">
-          <a class="nav-item" href="/datahub/">Data</a>
-          <a class="nav-item" href="/mapstore/">Viewer</a>
-          <a class="nav-item" href="/mapstore/#/home">Maps</a>
-          <a class="nav-item" href="/geoserver/web/">Services</a>
+          <a
+            class="nav-item"
+            :class="{ active: props.activeApp === 'datahub' }"
+            href="/datahub/"
+            >Data</a
+          >
+          <a
+            class="nav-item"
+            :class="{ active: props.activeApp === 'mapstore' }"
+            href="/mapstore/"
+            >Viewer</a
+          >
+          <a
+            class="nav-item"
+            :class="{ active: props.activeApp === 'mapstore-home' }"
+            href="/mapstore/#/home"
+            >Maps</a
+          >
+          <a
+            class="nav-item"
+            :class="{ active: props.activeApp === 'geoserver' }"
+            href="/geoserver/web/"
+            >Services</a
+          >
           <a v-if="!isAnonymous" class="nav-item" href="/import/">Import</a>
+          <span class="text-gray-400" v-if="isAdmin">|</span>
+          <div class="admin group inline-block relative" v-if="isAdmin">
+            <span></span>
+            <button class="nav-item after:hover:scale-x-0 flex items-center">
+              <span class="mr-2">Administration</span>
+              <ChevronDownIcon
+                class="w-4 h-4"
+                stroke-width="4"
+              ></ChevronDownIcon>
+            </button>
+            <ul
+              class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-50 bg-white"
+            >
+              <li :class="{ active: props.activeApp === 'geoserver' }">
+                <a
+                  class="catalog"
+                  v-if="adminRoles?.catalog"
+                  :href="`/geonetwork/srv/${state.lang3}/admin.console`"
+                >
+                  <CatalogIcon class="w-4 h-4 inline-block"></CatalogIcon>
+                  catalog</a
+                >
+              </li>
+              <li :class="{ active: props.activeApp === 'geoserver' }">
+                <a href="/mapstore/#/admin" v-if="adminRoles?.viewer" class="">
+                  <MapIcon class="w-4 h-4 inline-block"></MapIcon>
+                  mapstore</a
+                >
+              </li>
+              <li :class="{ active: props.activeApp === 'geoserver' }">
+                <a
+                  href="/console/manager/home"
+                  v-if="adminRoles?.console"
+                  class="console"
+                >
+                  <UsersIcon class="w-4 h-4 inline-block"></UsersIcon>
+                  console</a
+                >
+              </li>
+              <li :class="{ active: props.activeApp === 'analytics' }">
+                <a href="/analytics/" class="analytics">
+                  <ChartPieIcon class="w-4 h-4 inline-block"></ChartPieIcon>
+                  analytics</a
+                >
+              </li>
+            </ul>
+          </div>
         </nav>
       </div>
       <div class="flex justify-center items-center">
-        <div class="admin group inline-block relative h-full" v-if="isAdmin">
-          <button
-            class="bg-secondary/80 text-slate-100 py-2 px-4 rounded-l inline-flex items-center h-full"
-          >
-            Administration
-          </button>
-          <ul
-            class="absolute hidden pt-1 group-hover:block border rounded w-full admin-dropdown z-50 bg-white"
-          >
-            <li>
-              <a
-                class="catalog"
-                v-if="adminRoles?.catalog"
-                :href="`/geonetwork/srv/${state.lang3}/admin.console`"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-4 h-4 inline-block"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"
-                  />
-                </svg>
-                catalog</a
-              >
-            </li>
-            <li>
-              <a href="/mapstore/#/admin" v-if="adminRoles?.viewer" class="">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-4 h-4 inline-block"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"
-                  />
-                </svg>
-                mapstore</a
-              >
-            </li>
-            <li>
-              <a
-                href="/console/manager/home"
-                v-if="adminRoles?.console"
-                class="console"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-4 h-4 inline-block"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
-                  />
-                </svg>
-                console</a
-              >
-            </li>
-            <li>
-              <a href="/analytics/" class="analytics">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-4 h-4 inline-block"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z"
-                  />
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"
-                  />
-                </svg>
-                analytics</a
-              >
-            </li>
-          </ul>
-        </div>
         <div v-if="!isAnonymous" class="flex gap-4 items-baseline mx-6">
           <a
             class="link-btn"
@@ -308,10 +281,13 @@ onMounted(() => {
     @apply text-xl w-fit block text-center py-3 mx-2 w-full border-b border-b-secondary/10;
   }
   .nav-item {
-    @apply relative text-xl w-fit block after:hover:scale-x-100 px-2 mx-2;
+    @apply relative text-xl w-fit block after:hover:scale-x-[82%] px-2 mx-2 hover:text-black;
   }
   .nav-item:after {
-    @apply block content-[''] absolute h-[3px] bg-gradient-to-r from-primary to-primary/50 w-full scale-x-0  transition duration-300 origin-left;
+    @apply block content-[''] absolute h-[3px] bg-gradient-to-r from-primary to-primary/30 w-full scale-x-0  transition duration-300 origin-left;
+  }
+  .nav-item.active {
+    @apply after:scale-x-[82%] after:bg-primary text-gray-900;
   }
   .btn {
     @apply px-4 py-2 mx-2 text-slate-100 bg-primary rounded hover:bg-primary/70 transition-colors;
@@ -320,7 +296,13 @@ onMounted(() => {
     @apply text-primary/60 hover:text-primary hover:underline underline-offset-8 decoration-2 decoration-primary/50 flex flex-col items-center;
   }
   .admin-dropdown > li {
-    @apply block text-center py-3 hover:bg-primary/10 text-gray-700 hover:text-black capitalize;
+    @apply block text-center hover:bg-primary/10 text-gray-700 hover:text-black capitalize;
+  }
+  .admin-dropdown > li > a {
+    @apply block w-full h-full py-3;
+  }
+  .admin-dropdown > li.active {
+    @apply bg-primary/20;
   }
   * {
     -webkit-tap-highlight-color: transparent;
