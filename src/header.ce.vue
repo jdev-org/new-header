@@ -70,7 +70,12 @@ onMounted(() => {
 </script>
 <template>
   <div v-if="props.legacyHeader">
-    <iframe v-bind:src="props.legacyUrl" v-bind:style="props.style"></iframe>
+    <iframe
+      v-bind:src="
+        props.legacyUrl + (props.activeApp ? '?active=' + props.activeApp : '')
+      "
+      v-bind:style="props.style"
+    ></iframe>
   </div>
   <header
     v-if="!props.legacyHeader"
@@ -131,7 +136,7 @@ onMounted(() => {
               ></ChevronDownIcon>
             </button>
             <ul
-              class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-50 bg-white"
+              class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[51] bg-white"
             >
               <li :class="{ active: props.activeApp === 'geoserver' }">
                 <a
