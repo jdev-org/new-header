@@ -135,7 +135,7 @@ onMounted(() => {
             <ul
               class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[51] bg-white"
             >
-              <li :class="{ active: props.activeApp === 'geoserver' }">
+              <li :class="{ active: props.activeApp === 'geonetwork' }">
                 <a
                   class="catalog"
                   v-if="adminRoles?.catalog"
