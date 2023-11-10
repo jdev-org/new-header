@@ -151,7 +151,7 @@ onMounted(() => {
                   mapstore</a
                 >
               </li>
-              <li :class="{ active: props.activeApp === 'geoserver' }">
+              <li :class="{ active: props.activeApp === 'console' }">
                 <a
                   href="/console/manager/home"
                   v-if="adminRoles?.console"
