@@ -15,7 +15,7 @@ const props = defineProps<{
   activeApp?: string
   logoUrl?: string
   //legacy option : using old iframe option
-  legacyHeader: boolean
+  legacyHeader: string
   legacyUrl?: string
   style?: string
 }>()
@@ -69,7 +69,8 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div v-if="props.legacyHeader">
+  <!-- props.legacyHeader -->
+  <div v-if="'true' == props.legacyHeader">
     <iframe
       v-bind:src="
         props.legacyUrl + (props.activeApp ? '?active=' + props.activeApp : '')
@@ -77,11 +78,7 @@ onMounted(() => {
       v-bind:style="props.style"
     ></iframe>
   </div>
-  <header
-    v-if="!props.legacyHeader"
-    class="host h-full"
-    v-bind:style="props.style"
-  >
+  <header v-else class="host h-full" v-bind:style="props.style">
     <div class="justify-between text-slate-600 sm:flex hidden h-full">
       <div class="flex">
         <a
@@ -148,7 +145,7 @@ onMounted(() => {
                   catalog</a
                 >
               </li>
-              <li :class="{ active: props.activeApp === 'geoserver' }">
+              <li :class="{ active: props.activeApp === 'msadmin' }">
                 <a href="/mapstore/#/admin" v-if="adminRoles?.viewer" class="">
                   <MapIcon class="w-4 h-4 inline-block"></MapIcon>
                   mapstore</a
