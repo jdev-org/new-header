@@ -15,7 +15,7 @@ const props = defineProps<{
   activeApp?: string
   logoUrl?: string
   //legacy option : using old iframe option
-  legacyHeader: string
+  legacyHeader?: string
   legacyUrl?: string
   style?: string
 }>()
@@ -70,16 +70,17 @@ onMounted(() => {
 </script>
 <template>
   <!-- props.legacyHeader -->
-  <div v-if="'true' == props.legacyHeader">
+  <div v-if="props.legacyHeader === 'true'">
     <iframe
-      v-bind:src="
-        props.legacyUrl + (props.activeApp ? '?active=' + props.activeApp : '')
-      "
+      class="w-full"
+      v-bind:src="`${props.legacyUrl}${
+        props.activeApp ? `?active=${props.activeApp}` : ''
+      }`"
       v-bind:style="props.style"
     ></iframe>
   </div>
   <header v-else class="host h-full" v-bind:style="props.style">
-    <div class="justify-between text-slate-600 sm:flex hidden h-full">
+    <div class="justify-between text-slate-600 sm:flex hidden h-full bg-white">
       <div class="flex">
         <a
           href="/"
