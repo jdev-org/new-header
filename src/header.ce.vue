@@ -9,6 +9,7 @@ import MapIcon from '@/ui/MapIcon.vue'
 import ChartPieIcon from '@/ui/ChartPieIcon.vue'
 import UsersIcon from '@/ui/UsersIcon.vue'
 import ChevronDownIcon from '@/ui/ChevronDownIcon.vue'
+import { LANG_2_TO_3_MAPPER, t } from '@/i18n'
 
 const props = defineProps<{
   lang?: string
@@ -41,24 +42,6 @@ function toggleMenu(): void {
   state.mobileMenuOpen = !state.mobileMenuOpen
 }
 
-const LANG_2_TO_3_MAPPER: { [index: string]: any } = {
-  en: 'eng',
-  nl: 'dut',
-  fr: 'fre',
-  de: 'ger',
-  ko: 'kor',
-  es: 'spa',
-  cs: 'cze',
-  ca: 'cat',
-  fi: 'fin',
-  is: 'ice',
-  it: 'ita',
-  pt: 'por',
-  ru: 'rus',
-  zh: 'chi',
-  sk: 'slo',
-}
-
 onMounted(() => {
   state.lang3 =
     LANG_2_TO_3_MAPPER[props.lang || navigator.language.substring(0, 2)] ||
@@ -79,7 +62,7 @@ onMounted(() => {
       v-bind:style="props.style"
     ></iframe>
   </div>
-  <header v-else class="host h-full" v-bind:style="props.style">
+  <header v-else class="host h-full text-base" v-bind:style="props.style">
     <div class="justify-between text-slate-600 sm:flex hidden h-full bg-white">
       <div class="flex">
         <a
@@ -102,32 +85,34 @@ onMounted(() => {
             class="nav-item"
             :class="{ active: props.activeApp === 'datahub' }"
             href="/datahub/"
-            >Data</a
+            >{{ t('catalogue') }}</a
           >
           <a
             class="nav-item"
             :class="{ active: props.activeApp === 'mapstore' }"
             href="/mapstore/"
-            >Viewer</a
+            >{{ t('viewer') }}</a
           >
           <a
             class="nav-item"
             :class="{ active: props.activeApp === 'mapstore-home' }"
             href="/mapstore/#/home"
-            >Maps</a
+            >{{ t('maps') }}</a
           >
           <a
             class="nav-item"
             :class="{ active: props.activeApp === 'geoserver' }"
             href="/geoserver/web/"
-            >Services</a
+            >{{ t('services') }}</a
           >
-          <a v-if="!isAnonymous" class="nav-item" href="/import/">Import</a>
+          <a v-if="!isAnonymous" class="nav-item" href="/import/">{{
+            t('datafeeder')
+          }}</a>
           <span class="text-gray-400" v-if="isAdmin">|</span>
           <div class="admin group inline-block relative" v-if="isAdmin">
             <span></span>
             <button class="nav-item after:hover:scale-x-0 flex items-center">
-              <span class="mr-2">Administration</span>
+              <span class="mr-2 first-letter:capitalize">{{ t('admin') }}</span>
               <ChevronDownIcon
                 class="w-4 h-4"
                 stroke-width="4"
@@ -143,13 +128,13 @@ onMounted(() => {
                   :href="`/geonetwork/srv/${state.lang3}/admin.console`"
                 >
                   <CatalogIcon class="w-4 h-4 inline-block"></CatalogIcon>
-                  catalog</a
+                  {{ t('catalogue') }}</a
                 >
               </li>
               <li :class="{ active: props.activeApp === 'msadmin' }">
                 <a href="/mapstore/#/admin" v-if="adminRoles?.viewer" class="">
                   <MapIcon class="w-4 h-4 inline-block"></MapIcon>
-                  mapstore</a
+                  {{ t('viewer') }}</a
                 >
               </li>
               <li :class="{ active: props.activeApp === 'console' }">
@@ -159,7 +144,7 @@ onMounted(() => {
                   class="console"
                 >
                   <UsersIcon class="w-4 h-4 inline-block"></UsersIcon>
-                  console</a
+                  {{ t('users') }}</a
                 >
               </li>
               <li :class="{ active: props.activeApp === 'analytics' }">
@@ -172,6 +157,7 @@ onMounted(() => {
           </div>
         </nav>
       </div>
+      <div></div>
       <div class="flex justify-center items-center">
         <div v-if="!isAnonymous" class="flex gap-4 items-baseline mx-6">
           <a
@@ -184,9 +170,11 @@ onMounted(() => {
               state.user?.username
             }}</span></a
           >
-          <a class="link-btn" :href="logoutUrl"> Logout</a>
+          <a class="link-btn" :href="logoutUrl"
+            ><span class="first-letter:capitalize">{{ t('logout') }}</span></a
+          >
         </div>
-        <a v-else class="btn" :href="loginUrl">login</a>
+        <a v-else class="btn" :href="loginUrl">{{ t('login') }}</a>
       </div>
     </div>
     <div class="flex-col sm:hidden w-full h-full">
@@ -253,13 +241,13 @@ onMounted(() => {
         ]"
       >
         <nav class="flex flex-col font-semibold" v-if="state.mobileMenuOpen">
-          <a class="nav-item-mobile" href="/datahub/">Data</a>
-          <a class="nav-item-mobile" href="/mapstore/">Viewer</a>
-          <a class="nav-item-mobile" href="/mapstore/#/home">Maps</a>
-          <a class="nav-item-mobile" href="/geoserver/">Services</a>
-          <a v-if="!isAnonymous" class="nav-item-mobile" href="/import/"
-            >Import</a
-          >
+          <a class="nav-item-mobile" href="/datahub/">{{ t('catalogue') }}</a>
+          <a class="nav-item-mobile" href="/mapstore/">{{ t('viewer') }}</a>
+          <a class="nav-item-mobile" href="/mapstore/#/home">{{ t('maps') }}</a>
+          <a class="nav-item-mobile" href="/geoserver/">{{ t('services') }}</a>
+          <a v-if="!isAnonymous" class="nav-item-mobile" href="/import/">{{
+            t('datafeeder')
+          }}</a>
         </nav>
       </div>
     </div>
@@ -281,10 +269,10 @@ onMounted(() => {
 
 @layer components {
   .nav-item-mobile {
-    @apply text-xl w-fit block text-center py-3 mx-2 w-full border-b border-b-secondary/10;
+    @apply text-xl block text-center py-3 mx-2 w-full border-b border-b-secondary/10 first-letter:capitalize;
   }
   .nav-item {
-    @apply relative text-xl w-fit block after:hover:scale-x-[82%] px-2 mx-2 hover:text-black;
+    @apply relative text-lg w-fit block after:hover:scale-x-[82%] px-2 mx-2 hover:text-black first-letter:capitalize;
   }
   .nav-item:after {
     @apply block content-[''] absolute h-[3px] bg-gradient-to-r from-primary to-primary/30 w-full scale-x-0  transition duration-300 origin-left;
@@ -293,7 +281,7 @@ onMounted(() => {
     @apply after:scale-x-[82%] after:bg-primary text-gray-900;
   }
   .btn {
-    @apply px-4 py-2 mx-2 text-slate-100 bg-primary rounded hover:bg-primary/70 transition-colors;
+    @apply px-4 py-2 mx-2 text-slate-100 bg-primary rounded hover:bg-primary/70 transition-colors first-letter:capitalize;
   }
   .link-btn {
     @apply text-primary/60 hover:text-primary hover:underline underline-offset-8 decoration-2 decoration-primary/50 flex flex-col items-center;
