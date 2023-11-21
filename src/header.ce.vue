@@ -127,13 +127,13 @@ onMounted(() => {
                   v-if="adminRoles?.catalog"
                   :href="`/geonetwork/srv/${state.lang3}/admin.console`"
                 >
-                  <CatalogIcon class="w-4 h-4 inline-block"></CatalogIcon>
+                  <CatalogIcon class="icon-dropdown"></CatalogIcon>
                   {{ t('catalogue') }}</a
                 >
               </li>
               <li :class="{ active: props.activeApp === 'msadmin' }">
                 <a href="/mapstore/#/admin" v-if="adminRoles?.viewer" class="">
-                  <MapIcon class="w-4 h-4 inline-block"></MapIcon>
+                  <MapIcon class="icon-dropdown"></MapIcon>
                   {{ t('viewer') }}</a
                 >
               </li>
@@ -143,13 +143,13 @@ onMounted(() => {
                   v-if="adminRoles?.console"
                   class="console"
                 >
-                  <UsersIcon class="w-4 h-4 inline-block"></UsersIcon>
+                  <UsersIcon class="icon-dropdown"></UsersIcon>
                   {{ t('users') }}</a
                 >
               </li>
               <li :class="{ active: props.activeApp === 'analytics' }">
                 <a href="/analytics/" class="analytics">
-                  <ChartPieIcon class="w-4 h-4 inline-block"></ChartPieIcon>
+                  <ChartPieIcon class="icon-dropdown"></ChartPieIcon>
                   analytics</a
                 >
               </li>
@@ -294,6 +294,9 @@ onMounted(() => {
   }
   .admin-dropdown > li.active {
     @apply bg-primary/20;
+  }
+  .icon-dropdown {
+    @apply w-4 h-4 inline-block align-text-top;
   }
   * {
     -webkit-tap-highlight-color: transparent;
