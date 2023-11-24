@@ -1,4 +1,5 @@
 const AUTH_API_URL = '/whoami'
+const CONSOLE_PLATFORM_API_URL = '/console/private/platform/infos'
 
 type KNOWN_ROLES =
   | 'ROLE_SUPERUSER'
@@ -59,4 +60,22 @@ export function getAdminRoles(roles: KNOWN_ROLES[]): AdminRoles | null {
     catalog,
     viewer,
   }
+}
+
+export interface PlatformInfos {
+  analyticsEnabled: boolean
+  extractorappEnabled: boolean
+  saslEnabled: boolean
+}
+
+export async function getPlatformInfos(): Promise<PlatformInfos> {
+  return fetch(CONSOLE_PLATFORM_API_URL)
+    .then(response => response.json())
+    .then((json: PlatformInfos) => {
+      return {
+        analyticsEnabled: json.analyticsEnabled,
+        extractorappEnabled: json.extractorappEnabled,
+        saslEnabled: json.saslEnabled,
+      }
+    })
 }

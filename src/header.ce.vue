@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive } from 'vue'
-import { getUserDetails } from './auth'
-import type { User } from './auth'
+import { getUserDetails, getPlatformInfos } from './auth'
+import type { User, PlatformInfos } from './auth'
 import UserIcon from './ui/UserIcon.vue'
 import GeorchestraLogo from './ui/GeorchestraLogo.vue'
 import CatalogIcon from '@/ui/CatalogIcon.vue'
@@ -25,6 +25,7 @@ const state = reactive({
   user: null as null | User,
   mobileMenuOpen: false,
   lang3: props.lang,
+  platformInfos: null as null | PlatformInfos,
 })
 
 const isAnonymous = computed(() => !state.user || state.user.anonymous)
@@ -48,6 +49,12 @@ onMounted(() => {
     'eng'
   getUserDetails().then(user => {
     state.user = user
+
+    if (user?.adminRoles?.admin) {
+      getPlatformInfos().then(
+        platformInfos => (state.platformInfos = platformInfos)
+      )
+    }
   })
 })
 </script>
@@ -146,7 +153,10 @@ onMounted(() => {
                   {{ t('users') }}</a
                 >
               </li>
-              <li :class="{ active: props.activeApp === 'analytics' }">
+              <li
+                :class="{ active: props.activeApp === 'analytics' }"
+                v-if="state.platformInfos?.analyticsEnabled"
+              >
                 <a href="/analytics/" class="analytics">
                   <ChartPieIcon class="icon-dropdown"></ChartPieIcon>
                   analytics</a
