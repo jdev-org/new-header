@@ -13,6 +13,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        format: 'iife',
         entryFileNames: `assets/header.js`,
       },
     },
