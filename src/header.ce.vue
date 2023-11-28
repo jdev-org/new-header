@@ -73,7 +73,7 @@ onMounted(() => {
       <div class="flex">
         <a
           href="/"
-          class="flex justify-center items-center px-8 bg-primary/10 rounded-r-lg py-2"
+          class="flex justify-center items-center px-8 bg-primary rounded-r-lg py-2"
         >
           <img
             v-if="props.logoUrl"
@@ -282,31 +282,31 @@ onMounted(() => {
 
 @layer components {
   .nav-item-mobile {
-    @apply text-xl block text-center py-3 mx-2 w-full border-b border-b-secondary/10 first-letter:capitalize;
+    @apply text-xl block text-center py-3 mx-2 w-full border-b border-b-secondary first-letter:capitalize;
   }
   .nav-item {
     @apply relative text-lg w-fit block after:hover:scale-x-[82%] px-2 mx-2 hover:text-black first-letter:capitalize;
   }
   .nav-item:after {
-    @apply block content-[''] absolute h-[3px] bg-gradient-to-r from-primary to-primary/30 w-full scale-x-0  transition duration-300 origin-left;
+    @apply block content-[''] absolute h-[3px] bg-gradient-to-r from-primary to-secondary w-full scale-x-0  transition duration-300 origin-left;
   }
   .nav-item.active {
-    @apply after:scale-x-[82%] after:bg-primary text-gray-900;
+    @apply after:scale-x-[82%] after:bg-primary after:bg-none text-gray-900;
   }
   .btn {
-    @apply px-4 py-2 mx-2 text-slate-100 bg-primary rounded hover:bg-primary/70 transition-colors first-letter:capitalize;
+    @apply px-4 py-2 mx-2 text-slate-100 bg-primary rounded hover:bg-primary hover:bg-opacity-70 transition-colors first-letter:capitalize;
   }
   .link-btn {
-    @apply text-primary/60 hover:text-primary hover:underline underline-offset-8 decoration-2 decoration-primary/50 flex flex-col items-center;
+    @apply text-primary text-opacity-60 hover:text-primary hover:underline underline-offset-8 decoration-2 decoration-primary flex flex-col items-center;
   }
   .admin-dropdown > li {
-    @apply block text-center hover:bg-primary/10 text-gray-700 hover:text-black capitalize;
+    @apply block text-center hover:bg-primary hover:bg-opacity-10 text-gray-700 hover:text-black capitalize;
   }
   .admin-dropdown > li > a {
     @apply block w-full h-full py-3;
   }
   .admin-dropdown > li.active {
-    @apply bg-primary/20;
+    @apply bg-primary bg-opacity-20;
   }
   .icon-dropdown {
     @apply w-4 h-4 inline-block align-text-top;
