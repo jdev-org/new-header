@@ -111,9 +111,13 @@ onMounted(() => {
             href="/geoserver/web/"
             >{{ t('services') }}</a
           >
-          <a v-if="!isAnonymous" class="nav-item" href="/import/">{{
-            t('datafeeder')
-          }}</a>
+          <a
+            v-if="!isAnonymous"
+            class="nav-item"
+            href="/import/"
+            :class="{ active: props.activeApp === 'import' }"
+            >{{ t('datafeeder') }}</a
+          >
           <span class="text-gray-400" v-if="isAdmin">|</span>
           <div class="admin group inline-block relative" v-if="isAdmin">
             <span></span>
