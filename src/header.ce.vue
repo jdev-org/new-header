@@ -68,7 +68,7 @@ onMounted(() => {
       v-bind:style="props.style"
     ></iframe>
   </div>
-  <header v-else class="host h-full text-base" v-bind:style="props.style">
+  <header v-else class="host h-[80px] text-base" v-bind:style="props.style">
     <div class="justify-between text-slate-600 sm:flex hidden h-full bg-white">
       <div class="flex">
         <a
