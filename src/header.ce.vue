@@ -50,7 +50,7 @@ onMounted(() => {
   getUserDetails().then(user => {
     state.user = user
 
-    if (user?.adminRoles?.admin) {
+    if (user?.adminRoles?.superUser) {
       getPlatformInfos().then(
         platformInfos => (state.platformInfos = platformInfos)
       )
