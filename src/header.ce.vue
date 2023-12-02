@@ -31,6 +31,8 @@ const state = reactive({
 
 const isAnonymous = computed(() => !state.user || state.user.anonymous)
 const isAdmin = computed(() => state.user?.adminRoles?.admin)
+const isWarned = computed(() => state.user?.warned)
+const remainingDays = computed(() => state.user?.remainingDays)
 const adminRoles = computed(() => state.user?.adminRoles)
 
 const loginUrl = computed(() => {
@@ -50,8 +52,7 @@ onMounted(() => {
     'eng'
   getUserDetails().then(user => {
     state.user = user
-
-    if (user?.adminRoles?.superUser) {
+    if (user?.adminRoles?.admin) {
       getPlatformInfos().then(
         platformInfos => (state.platformInfos = platformInfos)
       )
@@ -170,6 +171,13 @@ onMounted(() => {
               </li>
             </ul>
           </div>
+          <span class="text-gray-400 text-xs" v-if="isWarned">
+            {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
+            {{ t('remaining_days_msg_part2') }}
+            <a href="console/account/changePassword">{{
+              t('remaining_days_msg_part3')
+            }}</a></span
+          >
         </nav>
       </div>
       <div></div>
