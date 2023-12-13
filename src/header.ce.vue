@@ -19,6 +19,7 @@ const props = defineProps<{
   legacyHeader?: string
   legacyUrl?: string
   style?: string
+  stylesheet?: string
 }>()
 
 const state = reactive({
@@ -69,11 +70,12 @@ onMounted(() => {
     ></iframe>
   </div>
   <header v-else class="host h-[80px] text-base" v-bind:style="props.style">
+    <link rel="stylesheet" :href="props.stylesheet" v-if="props.stylesheet" />
     <div class="justify-between text-slate-600 sm:flex hidden h-full bg-white">
       <div class="flex">
         <a
           href="/"
-          class="flex justify-center items-center px-8 rounded-r-lg py-2"
+          class="flex justify-center items-center px-8 rounded-r-lg py-2 bg-primary_light"
         >
           <img
             v-if="props.logoUrl"
@@ -263,6 +265,15 @@ onMounted(() => {
   </header>
 </template>
 
+<style>
+header {
+  --georchestra-primary: #85127e;
+  --georchestra-secondary: #1b1f3b;
+  --georchestra-primary-light: rgba(133, 18, 126, 0.3);
+  --georchestra-secondary-light: rgba(27, 31, 59, 0.3);
+}
+</style>
+
 <style scoped>
 @tailwind base;
 @tailwind components;
@@ -284,7 +295,7 @@ onMounted(() => {
     @apply relative text-lg w-fit block after:hover:scale-x-[82%] px-2 mx-2 hover:text-black first-letter:capitalize;
   }
   .nav-item:after {
-    @apply block content-[''] absolute h-[3px] bg-gradient-to-r from-primary to-slate-300 w-full scale-x-0  transition duration-300 origin-left;
+    @apply block content-[''] absolute h-[3px] bg-gradient-to-r from-primary to-secondary_light w-full scale-x-0  transition duration-300 origin-left;
   }
   .nav-item.active {
     @apply after:scale-x-[82%] after:bg-primary after:bg-none text-gray-900;

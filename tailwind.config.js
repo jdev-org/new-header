@@ -4,8 +4,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: 'var(--primary)',
-        secondary: 'var(--secondary)',
+        primary: 'var(--georchestra-primary)',
+        secondary: 'var(--georchestra-secondary)',
+        primary_light: 'var(--georchestra-primary-light)',
+        secondary_light: 'var(--georchestra-secondary-light)',
       },
     },
   },
