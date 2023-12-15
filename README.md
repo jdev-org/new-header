@@ -41,6 +41,16 @@ Attributes available :
 | style         | adds this style to iframe or host tag (if legacy url is not used)                                    | `<geor-header legacy-url="myheader.com" style="width: 100%"></geor-header>` | v        | v         |
 | stylesheet    | allow to add stylesheet for new header                                                               | `<geor-header stylesheet="myfile.css"></geor-header>`   | v        |           |
  
+3. Optional : Override default colors with `stylesheet` attribute : 
+
+```css
+header {
+    --georchestra-primary: #124885;
+    --georchestra-secondary: #83532b;
+    --georchestra-primary-light: #12488540;
+    --georchestra-secondary-light: #83532b40;
+  }
+```
 
 ## Development
 
