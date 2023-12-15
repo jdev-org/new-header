@@ -269,8 +269,8 @@ onMounted(() => {
 header {
   --georchestra-primary: #85127e;
   --georchestra-secondary: #1b1f3b;
-  --georchestra-primary-light: rgba(133, 18, 126, 0.3);
-  --georchestra-secondary-light: rgba(27, 31, 59, 0.3);
+  --georchestra-primary-light: #85127e1a;
+  --georchestra-secondary-light: #1b1f3b1a;
 }
 </style>
 
