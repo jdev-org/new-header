@@ -6,8 +6,8 @@ module.exports = {
       colors: {
         primary: 'var(--georchestra-primary)',
         secondary: 'var(--georchestra-secondary)',
-        primary_light: 'var(--georchestra-primary-light)',
-        secondary_light: 'var(--georchestra-secondary-light)',
+        'primary-light': 'var(--georchestra-primary-light)',
+        'secondary-light': 'var(--georchestra-secondary-light)',
       },
     },
   },

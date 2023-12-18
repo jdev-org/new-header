@@ -75,7 +75,7 @@ onMounted(() => {
       <div class="flex">
         <a
           href="/"
-          class="flex justify-center items-center px-8 rounded-r-lg py-2 bg-primary_light"
+          class="flex justify-center items-center px-8 rounded-r-lg py-2 bg-primary-light"
         >
           <img
             v-if="props.logoUrl"
@@ -295,7 +295,7 @@ header {
     @apply relative text-lg w-fit block after:hover:scale-x-[82%] px-2 mx-2 hover:text-black first-letter:capitalize;
   }
   .nav-item:after {
-    @apply block content-[''] absolute h-[3px] bg-gradient-to-r from-primary to-secondary_light w-full scale-x-0  transition duration-300 origin-left;
+    @apply block content-[''] absolute h-[3px] bg-gradient-to-r from-primary to-secondary-light w-full scale-x-0  transition duration-300 origin-left;
   }
   .nav-item.active {
     @apply after:scale-x-[82%] after:bg-primary after:bg-none text-gray-900;
@@ -307,13 +307,13 @@ header {
     @apply text-primary hover:text-slate-700 hover:underline underline-offset-8 decoration-2 decoration-slate-700 flex flex-col items-center;
   }
   .admin-dropdown > li {
-    @apply block text-center hover:bg-primary hover:bg-slate-300 text-gray-700 hover:text-black capitalize;
+    @apply block text-center hover:bg-primary-light text-gray-700 hover:text-black capitalize;
   }
   .admin-dropdown > li > a {
     @apply block w-full h-full py-3;
   }
   .admin-dropdown > li.active {
-    @apply bg-primary bg-slate-400;
+    @apply bg-primary-light;
   }
   .icon-dropdown {
     @apply w-4 h-4 inline-block align-text-top;

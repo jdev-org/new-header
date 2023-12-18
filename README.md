@@ -52,6 +52,8 @@ header {
   }
 ```
 
+Note: It's important to target the `header` tag here to override the css variables, because of the shadow DOM. 
+
 ## Development
 
 On every new commit on main the `header.js` file on the `dist` branch is updated automatically.
