@@ -173,8 +173,8 @@ onMounted(() => {
         </nav>
       </div>
       <div></div>
-      <div class="flex justify-center items-center">
-        <div v-if="!isAnonymous" class="flex gap-4 items-baseline mx-6">
+      <div class="flex justify-center items-center mx-6">
+        <div v-if="!isAnonymous" class="flex gap-4 items-baseline">
           <a
             class="link-btn"
             href="/console/account/userdetails"
