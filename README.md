@@ -31,15 +31,28 @@ Iframe can still be set with defining `legacy-url` attribute, style can also be 
 
 Attributes available :
 
-| Attribute     | Description                                                                                          | Example                                                                     | For host | For legacy |
-|---------------|------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|----------|------------|
-| lang          | Used to force header language (default value : en)                                                   | `<geor-header lang='de'>`                                                   | v        |            |
-| active-app    | Use this attribute to set the active class in menu                                                   | `<geor-header active-app='console'>`                                        | v        | v          |
-| logo-url      | Use this attribute to set the logo for the new header (not legacy one).                              | `<geor-header logo-url='https://linktomylogo.com'>`                         | v        |            |
-| legacy-header | Use this attribute to enable the legacy header `iframe` tag. Needs `legacy-url`.                     | `<geor-header legacy-header='true' legacy-url="/header/">`                  |          | v          |
-| legacy-url    | Legacy URL: if set, activates iframe with src attribute pointing to this URL. Needs `legacy-header`. | `<geor-header legacy-header='true' legacy-url="/header/"></geor-header>`    |          | v          |
-| style         | adds this style to iframe or host tag (if legacy url is not used)                                    | `<geor-header legacy-url="myheader.com" style="width: 100%"></geor-header>` | v        | v          |
+| Attribute     | Description                                                                                          | Example                                                                   | For host | For legacy |
+|---------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|----------|-----------|
+| lang          | Used to force header language (default value : en)                                                   | `<geor-header lang='de'>`                                                 | v        |           |
+| active-app    | Use this attribute to set the active class in menu                                                   | `<geor-header active-app='console'>`                                      | v        | v         |
+| logo-url      | Use this attribute to set the logo for the new header (not legacy one).                              | `<geor-header logo-url='https://linktomylogo.com'>`                       | v        |           |
+| legacy-header | Use this attribute to enable the legacy header `iframe` tag. Needs `legacy-url`.                     | `<geor-header legacy-header='true' legacy-url="/header/">`                |          | v         |
+| legacy-url    | Legacy URL: if set, activates iframe with src attribute pointing to this URL. Needs `legacy-header`. | `<geor-header legacy-header='true' legacy-url="/header/"></geor-header>`  |          | v         |
+| style         | adds this style to iframe or host tag (if legacy url is not used)                                    | `<geor-header legacy-url="myheader.com" style="width: 100%"></geor-header>` | v        | v         |
+| stylesheet    | allow to add stylesheet for new header                                                               | `<geor-header stylesheet="myfile.css"></geor-header>`   | v        |           |
  
+3. Optional : Override default colors with `stylesheet` attribute : 
+
+```css
+header {
+    --georchestra-primary: #124885;
+    --georchestra-secondary: #83532b;
+    --georchestra-primary-light: #12488540;
+    --georchestra-secondary-light: #83532b40;
+  }
+```
+
+Note: It's important to target the `header` tag here to override the css variables, because of the shadow DOM. 
 
 ## Development
 

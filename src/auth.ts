@@ -26,6 +26,7 @@ export interface User {
 }
 
 export interface AdminRoles {
+  superUser: boolean
   admin: boolean
   console: boolean
   catalog: boolean
@@ -55,6 +56,7 @@ export function getAdminRoles(roles: KNOWN_ROLES[]): AdminRoles | null {
     console || catalog || viewer || roles.indexOf('ROLE_ADMINISTRATOR') > -1
   if (!admin) return null
   return {
+    superUser,
     admin,
     console,
     catalog,
