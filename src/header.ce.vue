@@ -71,6 +71,12 @@ onMounted(() => {
   </div>
   <header v-else class="host h-[80px] text-base" v-bind:style="props.style">
     <link rel="stylesheet" :href="props.stylesheet" v-if="props.stylesheet" />
+    <component :is="'style'" v-if="!props.stylesheet">
+      header { --georchestra-header-primary: #85127e;
+      --georchestra-header-secondary: #1b1f3b;
+      --georchestra-header-primary-light: #85127e1a;
+      --georchestra-header-secondary-light: #1b1f3b1a; }
+    </component>
     <div class="justify-between text-slate-600 sm:flex hidden h-full bg-white">
       <div class="flex">
         <a
@@ -264,15 +270,6 @@ onMounted(() => {
     </div>
   </header>
 </template>
-
-<style>
-header {
-  --georchestra-primary: #85127e;
-  --georchestra-secondary: #1b1f3b;
-  --georchestra-primary-light: #85127e1a;
-  --georchestra-secondary-light: #1b1f3b1a;
-}
-</style>
 
 <style scoped>
 @tailwind base;
