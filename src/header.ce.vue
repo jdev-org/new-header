@@ -138,7 +138,7 @@ onMounted(() => {
               ></ChevronDownIcon>
             </button>
             <ul
-              class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[101] bg-white"
+              class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[1002] bg-white"
             >
               <li :class="{ active: props.activeApp === 'geonetwork' }">
                 <a
