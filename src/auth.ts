@@ -16,6 +16,8 @@ interface WhoAmIResponse {
   GeorchestraUser: {
     roles: KNOWN_ROLES[]
     username: string
+    firstName: string
+    lastName: string
     ldapWarn: boolean
     ldapRemainingDays: string
   }
@@ -23,6 +25,8 @@ interface WhoAmIResponse {
 
 export interface User {
   username: string
+  firstname?: string
+  lastname?: string
   anonymous: boolean
   warned: boolean
   remainingDays: string
@@ -42,9 +46,20 @@ export async function getUserDetails(): Promise<User> {
     .then(response => response.json())
     .then((json: WhoAmIResponse) => {
       const user = json.GeorchestraUser
+      if (!user) {
+        return {
+          username: 'anonymousUser',
+          warned: false,
+          remainingDays: '0',
+          anonymous: true,
+          adminRoles: null,
+        }
+      }
       const roles = user.roles
       return {
         username: user.username,
+        firstname: user.firstName,
+        lastname: user.lastName,
         warned: user.ldapWarn,
         remainingDays: user.ldapRemainingDays,
         anonymous: roles.indexOf('ROLE_ANONYMOUS') > -1,
