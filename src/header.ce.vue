@@ -129,7 +129,6 @@ onMounted(() => {
           >
           <span class="text-gray-400" v-if="isAdmin">|</span>
           <div class="admin group inline-block relative" v-if="isAdmin">
-            <span></span>
             <button class="nav-item after:hover:scale-x-0 flex items-center">
               <span class="mr-2 first-letter:capitalize">{{ t('admin') }}</span>
               <ChevronDownIcon
