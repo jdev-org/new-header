@@ -40,6 +40,7 @@ export interface AdminRoles {
   console: boolean
   catalog: boolean
   viewer: boolean
+  import: boolean
 }
 
 export async function getUserDetails(): Promise<User> {
