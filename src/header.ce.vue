@@ -142,8 +142,12 @@ onMounted(() => {
               <li :class="{ active: props.activeApp === 'geonetwork' }">
                 <a
                   class="catalog"
-                  v-if="adminRoles?.catalog"
-                  :href="`/geonetwork/srv/${state.lang3}/admin.console`"
+                  v-if="adminRoles?.catalog || adminRoles?.catalogAdmin"
+                  :href="
+                    adminRoles?.catalogAdmin
+                      ? `/geonetwork/srv/${state.lang3}/admin.console`
+                      : `/geonetwork/srv/${state.lang3}/catalog.edit#/board`
+                  "
                 >
                   <CatalogIcon class="icon-dropdown"></CatalogIcon>
                   {{ t('catalogue') }}</a
