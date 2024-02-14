@@ -11,6 +11,7 @@ type KNOWN_ROLES =
   | 'ROLE_GN_ADMIN'
   | 'ROLE_EMAILPROXY'
   | 'ROLE_ANONYMOUS'
+  | 'ROLE_IMPORT'
 
 interface WhoAmIResponse {
   GeorchestraUser: {
@@ -82,6 +83,7 @@ export function getAdminRoles(roles: KNOWN_ROLES[]): AdminRoles | null {
     console,
     catalog,
     viewer,
+    import: superUser || roles.indexOf('ROLE_IMPORT') > -1,
   }
 }
 
