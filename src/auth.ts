@@ -8,6 +8,8 @@ type KNOWN_ROLES =
   | 'ROLE_USER'
   | 'ROLE_ADMINISTRATOR'
   | 'ROLE_EXTRACTORAPP'
+  | 'ROLE_GN_REVIEWER'
+  | 'ROLE_GN_EDITOR'
   | 'ROLE_GN_ADMIN'
   | 'ROLE_EMAILPROXY'
   | 'ROLE_ANONYMOUS'
@@ -38,6 +40,7 @@ export interface AdminRoles {
   admin: boolean
   console: boolean
   catalog: boolean
+  catalogAdmin: boolean
   viewer: boolean
 }
 
@@ -71,16 +74,18 @@ export async function getUserDetails(): Promise<User> {
 export function getAdminRoles(roles: KNOWN_ROLES[]): AdminRoles | null {
   const superUser = roles.indexOf('ROLE_SUPERUSER') > -1
   const console = superUser || roles.indexOf('ROLE_ORGADMIN') > -1
-  const catalog = superUser || roles.indexOf('ROLE_GN_ADMIN') > -1
+  const catalogAdmin = superUser || roles.indexOf('ROLE_GN_ADMIN') > -1
+  const catalog = !catalogAdmin && (roles.indexOf('ROLE_GN_EDITOR') > -1 || roles.indexOf('ROLE_GN_REVIEWER') > -1)
   const viewer = superUser || roles.indexOf('ROLE_MAPSTORE_ADMIN') > -1
   const admin =
-    superUser || console || catalog || viewer
+    superUser || console || catalog || viewer || catalogAdmin
   if (!admin) return null
   return {
     superUser,
     admin,
     console,
     catalog,
+    catalogAdmin,
     viewer,
   }
 }
