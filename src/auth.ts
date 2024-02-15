@@ -8,7 +8,7 @@ type KNOWN_ROLES =
   | 'ROLE_USER'
   | 'ROLE_ADMINISTRATOR'
   | 'ROLE_EXTRACTORAPP'
-  | 'ROLE_GN_VIEWER'
+  | 'ROLE_GN_REVIEWER'
   | 'ROLE_GN_EDITOR'
   | 'ROLE_GN_ADMIN'
   | 'ROLE_EMAILPROXY'
@@ -75,7 +75,7 @@ export function getAdminRoles(roles: KNOWN_ROLES[]): AdminRoles | null {
   const superUser = roles.indexOf('ROLE_SUPERUSER') > -1
   const console = superUser || roles.indexOf('ROLE_ORGADMIN') > -1
   const catalogAdmin = superUser || roles.indexOf('ROLE_GN_ADMIN') > -1
-  const catalog = !catalogAdmin && (roles.indexOf('ROLE_GN_EDITOR') > -1 || roles.indexOf('ROLE_GN_VIEWER') > -1)
+  const catalog = !catalogAdmin && (roles.indexOf('ROLE_GN_EDITOR') > -1 || roles.indexOf('ROLE_GN_REVIEWER') > -1)
   const viewer = superUser || roles.indexOf('ROLE_MAPSTORE_ADMIN') > -1
   const admin =
     superUser || console || catalog || viewer || catalogAdmin
