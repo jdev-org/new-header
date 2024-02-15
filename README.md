@@ -40,6 +40,24 @@ Attributes available :
 | legacy-header | Use this attribute to enable the legacy header `iframe` tag. Needs `legacy-url`.                     | `<geor-header legacy-header='true' legacy-url="/header/">`                  |          | v          |
 | legacy-url    | Legacy URL: if set, activates iframe with src attribute pointing to this URL. Needs `legacy-header`. | `<geor-header legacy-header='true' legacy-url="/header/"></geor-header>`    |          | v          |
 | style         | adds this style to iframe or host tag (if legacy url is not used)                                    | `<geor-header legacy-url="myheader.com" style="width: 100%"></geor-header>` | v        | v          |
+| stylesheet         | adds this stylesheet to host tag                                   | `<geor-header stylesheet="mystylesheet.css"></geor-header>` | v        |           |
+
+3. Provide a custom stylesheet
+
+Example :
+```css
+/* Example of custom stylesheet */
+header {
+    --georchestra-header-primary: #e20714;
+    --georchestra-header-secondary: #333;
+    --georchestra-header-primary-light: white;
+    --georchestra-header-secondary-light: #eee;
+}
+.admin-dropdown>li.active {
+    background-color: red;
+    color: white;
+}
+```
 
 ## Development
 
