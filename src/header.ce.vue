@@ -121,7 +121,7 @@ onMounted(() => {
             >{{ t('services') }}</a
           >
           <a
-            v-if="!isAnonymous"
+            v-if="adminRoles?.import"
             class="nav-item"
             href="/import/"
             :class="{ active: props.activeApp === 'import' }"

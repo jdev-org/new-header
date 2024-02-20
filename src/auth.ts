@@ -13,6 +13,7 @@ type KNOWN_ROLES =
   | 'ROLE_GN_ADMIN'
   | 'ROLE_EMAILPROXY'
   | 'ROLE_ANONYMOUS'
+  | 'ROLE_IMPORT'
 
 interface WhoAmIResponse {
   GeorchestraUser: {
@@ -42,6 +43,7 @@ export interface AdminRoles {
   catalog: boolean
   catalogAdmin: boolean
   viewer: boolean
+  import: boolean
 }
 
 export async function getUserDetails(): Promise<User> {
@@ -87,6 +89,7 @@ export function getAdminRoles(roles: KNOWN_ROLES[]): AdminRoles | null {
     catalog,
     catalogAdmin,
     viewer,
+    import: superUser || roles.indexOf('ROLE_IMPORT') > -1,
   }
 }
 
