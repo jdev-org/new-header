@@ -81,7 +81,7 @@ export function getAdminRoles(roles: KNOWN_ROLES[]): AdminRoles | null {
   const viewer = superUser || roles.indexOf('ROLE_MAPSTORE_ADMIN') > -1
   const admin =
     superUser || console || catalog || viewer || catalogAdmin
-  if (!admin) return null
+  if (!admin && roles.indexOf('ROLE_IMPORT') === -1) return null
   return {
     superUser,
     admin,
