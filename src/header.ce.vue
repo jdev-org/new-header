@@ -181,11 +181,11 @@ onMounted(() => {
             </ul>
           </div>
           <span class="text-gray-400 text-xs" v-if="isWarned">
-            {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
-            {{ t('remaining_days_msg_part2') }}
-            <a href="console/account/changePassword">{{
-              t('remaining_days_msg_part3')
-            }}</a></span
+            <a href="/console/account/changePassword">
+              {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
+              {{ t('remaining_days_msg_part2') }}
+              {{ t('remaining_days_msg_part3') }}</a
+            ></span
           >
         </nav>
       </div>
