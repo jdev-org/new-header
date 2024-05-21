@@ -34,28 +34,30 @@ Attributes available :
 
 | Attribute     | Description                                                                                          | Example                                                                     | For host | For legacy |
 | ------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | -------- | ---------- |
+| hideLogin     | Used to hide the login buttton                                                                       | `<geor-header hide-login='true'>`                                           | v        |            |
 | lang          | Used to force header language (default value : en)                                                   | `<geor-header lang='de'>`                                                   | v        |            |
 | active-app    | Use this attribute to set the active class in menu                                                   | `<geor-header active-app='console'>`                                        | v        | v          |
 | logo-url      | Use this attribute to set the logo for the new header (not legacy one).                              | `<geor-header logo-url='https://linktomylogo.com'>`                         | v        |            |
 | legacy-header | Use this attribute to enable the legacy header `iframe` tag. Needs `legacy-url`.                     | `<geor-header legacy-header='true' legacy-url="/header/">`                  |          | v          |
 | legacy-url    | Legacy URL: if set, activates iframe with src attribute pointing to this URL. Needs `legacy-header`. | `<geor-header legacy-header='true' legacy-url="/header/"></geor-header>`    |          | v          |
 | style         | adds this style to iframe or host tag (if legacy url is not used)                                    | `<geor-header legacy-url="myheader.com" style="width: 100%"></geor-header>` | v        | v          |
-| stylesheet         | adds this stylesheet to host tag                                   | `<geor-header stylesheet="mystylesheet.css"></geor-header>` | v        |           |
+| stylesheet    | adds this stylesheet to host tag                                                                     | `<geor-header stylesheet="mystylesheet.css"></geor-header>`                 | v        |            |
 
 3. Provide a custom stylesheet
 
 Example :
+
 ```css
 /* Example of custom stylesheet */
 header {
-    --georchestra-header-primary: #e20714;
-    --georchestra-header-secondary: #333;
-    --georchestra-header-primary-light: white;
-    --georchestra-header-secondary-light: #eee;
+  --georchestra-header-primary: #e20714;
+  --georchestra-header-secondary: #333;
+  --georchestra-header-primary-light: white;
+  --georchestra-header-secondary-light: #eee;
 }
-.admin-dropdown>li.active {
-    background-color: red;
-    color: white;
+.admin-dropdown > li.active {
+  background-color: red;
+  color: white;
 }
 ```
 

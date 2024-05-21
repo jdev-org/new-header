@@ -12,6 +12,7 @@ import ChevronDownIcon from '@/ui/ChevronDownIcon.vue'
 import { LANG_2_TO_3_MAPPER, t } from '@/i18n'
 
 const props = defineProps<{
+  hideLogin?: string
   lang?: string
   activeApp?: string
   logoUrl?: string
@@ -206,7 +207,12 @@ onMounted(() => {
             ><span class="first-letter:capitalize">{{ t('logout') }}</span></a
           >
         </div>
-        <a v-else class="btn" :href="loginUrl">{{ t('login') }}</a>
+        <a
+          v-if="props.hideLogin !== 'true' && isAnonymous"
+          class="btn"
+          :href="loginUrl"
+          >{{ t('login') }}</a
+        >
       </div>
     </div>
     <div class="flex-col sm:hidden w-full h-full">
