@@ -1,0 +1,67 @@
+{
+  "menu": [
+    {
+      "label": "Catalogue",
+      "i18n": "catalogue",
+      "url": "/datahub/",
+      "active-app" : "datahub"
+    },
+    {
+      "label": "Mapstore viewer",
+      "i18n": "viewer",
+      "url": "/mapstore",
+        "active-app" : "mapstore"
+    },
+    {
+      "label": "Maps",
+      "i18n": "maps",
+      "url": "/mapstore/#/home",
+      "active-app" : "mapstore-home"
+    },
+    {
+      "label": "Services",
+      "i18n": "services",
+      "url": "/geoserver/web",
+      "active-app" : "geoserver"
+    },
+    {
+      "label": "Datafeeder",
+      "i18n": "datafeeder",
+      "url": "/datafeeder",
+      "active-app" : "datafeeder",
+      "condition": "import"
+    },
+    {
+      "condition": "isAdmin",
+      "type": "separator"
+    },
+    {
+      "type": "dropdown",
+      "label": "Administration",
+      "i18n": "admin",
+      "items": [
+        {
+          "label": "Geonetwork",
+          "i18n": "catalogue",
+          "url": "/georchestra/ldap/users",
+          "active-app": "geonetwork",
+          "condition": "catalogAdmin"
+        },
+        {
+          "label": "Viewer",
+          "i18n": "viewer",
+          "url": "/mapstore/#/admin",
+          "active-app": "msadmin",
+          "condition": "viewer"
+        },
+        {
+          "label": "Console",
+          "i18n": "users",
+          "url": "/console/manager/home",
+          "active-app": "console",
+          "condition": "console"
+        }
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@ import ru from './i18n/ru.json'
 import { createI18n } from 'vue-i18n'
 
 const i18n = createI18n({
-  locale: navigator.language,
+  locale: navigator.language.substring(0, 2),
   fallbackLocale: 'fr',
   messages: {
     en: en,

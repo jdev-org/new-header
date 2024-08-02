@@ -10,6 +10,7 @@ import ChartPieIcon from '@/ui/ChartPieIcon.vue'
 import UsersIcon from '@/ui/UsersIcon.vue'
 import ChevronDownIcon from '@/ui/ChevronDownIcon.vue'
 import { LANG_2_TO_3_MAPPER, t } from '@/i18n'
+import menu from '@/menu.json'
 
 const props = defineProps<{
   hideLogin?: string
@@ -45,6 +46,10 @@ const logoutUrl = computed(() => '/logout')
 
 function toggleMenu(): void {
   state.mobileMenuOpen = !state.mobileMenuOpen
+}
+
+function checkCondition(condition: string): boolean {
+  return !condition || (condition && state.user?.adminRoles?.[condition])
 }
 
 onMounted(() => {
@@ -97,90 +102,46 @@ onMounted(() => {
           ></GeorchestraLogo>
         </a>
         <nav class="flex justify-center items-center font-semibold">
-          <a
-            class="nav-item"
-            :class="{ active: props.activeApp === 'datahub' }"
-            href="/datahub/"
-            >{{ t('catalogue') }}</a
-          >
-          <a
-            class="nav-item"
-            :class="{ active: props.activeApp === 'mapstore' }"
-            href="/mapstore/"
-            >{{ t('viewer') }}</a
-          >
-          <a
-            class="nav-item"
-            :class="{ active: props.activeApp === 'mapstore-home' }"
-            href="/mapstore/#/home"
-            >{{ t('maps') }}</a
-          >
-          <a
-            class="nav-item"
-            :class="{ active: props.activeApp === 'geoserver' }"
-            href="/geoserver/web/"
-            >{{ t('services') }}</a
-          >
-          <a
-            v-if="adminRoles?.import"
-            class="nav-item"
-            href="/import/"
-            :class="{ active: props.activeApp === 'import' }"
-            >{{ t('datafeeder') }}</a
-          >
-          <span class="text-gray-400" v-if="isAdmin">|</span>
-          <div class="admin group inline-block relative" v-if="isAdmin">
-            <button class="nav-item after:hover:scale-x-0 flex items-center">
-              <span class="mr-2 first-letter:capitalize">{{ t('admin') }}</span>
-              <ChevronDownIcon
-                class="w-4 h-4"
-                stroke-width="4"
-              ></ChevronDownIcon>
-            </button>
-            <ul
-              class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[1002] bg-white"
-            >
-              <li :class="{ active: props.activeApp === 'geonetwork' }">
-                <a
-                  class="catalog"
-                  v-if="adminRoles?.catalog || adminRoles?.catalogAdmin"
-                  :href="
-                    adminRoles?.catalogAdmin
-                      ? `/geonetwork/srv/${state.lang3}/admin.console`
-                      : `/geonetwork/srv/${state.lang3}/catalog.edit#/board`
-                  "
-                >
-                  <CatalogIcon class="icon-dropdown"></CatalogIcon>
-                  {{ t('catalogue') }}</a
-                >
-              </li>
-              <li :class="{ active: props.activeApp === 'msadmin' }">
-                <a href="/mapstore/#/admin" v-if="adminRoles?.viewer" class="">
-                  <MapIcon class="icon-dropdown"></MapIcon>
-                  {{ t('viewer') }}</a
-                >
-              </li>
-              <li :class="{ active: props.activeApp === 'console' }">
-                <a
-                  href="/console/manager/home"
-                  v-if="adminRoles?.console"
-                  class="console"
-                >
-                  <UsersIcon class="icon-dropdown"></UsersIcon>
-                  {{ t('users') }}</a
-                >
-              </li>
-              <li
-                :class="{ active: props.activeApp === 'analytics' }"
-                v-if="state.platformInfos?.analyticsEnabled"
+          <template v-for="item in menu.menu" v-if="checkCondition">
+            <template v-if="!item.type && checkCondition(item.condition)">
+              <a
+                :href="item.url"
+                class="nav-item"
+                :class="{ active: props.activeApp === item['active-app'] }"
+                >{{ item.i18n ? t(item.i18n) : item.label }}</a
               >
-                <a href="/analytics/" class="analytics">
-                  <ChartPieIcon class="icon-dropdown"></ChartPieIcon>
-                  analytics</a
+            </template>
+            <template v-else-if="item.type === 'separator' && checkCondition(item.condition)">
+              <span class="text-gray-400">|</span>
+            </template>
+            <template v-else-if="item.type === 'dropdown' && checkCondition(item.condition)">
+              <div class="group inline-block relative">
+                <button class="nav-item after:hover:scale-x-0 flex items-center">
+                  <span class="mr-2 first-letter:capitalize">{{
+                    item.i18n ? t(item.i18n) : item.label
+                  }}</span>
+                  <ChevronDownIcon
+                    class="w-4 h-4"
+                    stroke-width="4"
+                  ></ChevronDownIcon>
+                </button>
+                <ul
+                  class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[1002] bg-white"
                 >
-              </li>
-            </ul>
-          </div>
+                  <template v-for="subitem in item.items">
+                    <li v-if="checkCondition(subitem.condition)"
+                      :class="{ active: props.activeApp === subitem['active-app'] }"
+                    >
+                      <a :href="subitem.url" class="capitalize">
+                        {{ subitem.i18n ? t(subitem.i18n) : subitem.label }}</a
+                      >
+                    </li>
+                  </template>
+                </ul>
+              </div>
+            </template>
+          </template>
+
           <span class="text-gray-400 text-xs" v-if="isWarned">
             <a href="/console/account/changePassword">
               {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
