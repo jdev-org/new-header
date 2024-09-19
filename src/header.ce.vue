@@ -79,133 +79,161 @@ onMounted(() => {
       --georchestra-header-primary-light: #85127e1a;
       --georchestra-header-secondary-light: #1b1f3b1a; }
     </component>
-    <div class="justify-between text-slate-600 sm:flex hidden h-full bg-white">
-      <div class="flex">
+    <div class="justify-between text-slate-600 lg:flex hidden h-full bg-white">
+      <a
+        href="/"
+        class="flex justify-center items-center px-8 rounded-r-lg py-2 bg-primary-light"
+      >
+        <img
+          v-if="props.logoUrl"
+          :src="props.logoUrl"
+          alt="geOrchestra logo"
+          class="w-64"
+        />
+        <GeorchestraLogo
+          v-else
+          class="w-full h-12 my-auto block"
+        ></GeorchestraLogo>
+      </a>
+      <nav
+        class="flex justify-center items-center font-semibold uppercase md:text-sm"
+      >
         <a
-          href="/"
-          class="flex justify-center items-center px-8 rounded-r-lg py-2 bg-primary-light"
+          class="nav-item"
+          :class="{ active: props.activeApp === 'service-sig' }"
+          href="//"
+          >Service SIG</a
         >
-          <img
-            v-if="props.logoUrl"
-            :src="props.logoUrl"
-            alt="geOrchestra logo"
-            class="w-32"
-          />
-          <GeorchestraLogo
-            v-else
-            class="w-full h-12 my-auto block"
-          ></GeorchestraLogo>
-        </a>
-        <nav class="flex justify-center items-center font-semibold">
-          <a
-            class="nav-item"
-            :class="{ active: props.activeApp === 'datahub' }"
-            href="/datahub/"
-            >{{ t('catalogue') }}</a
+        <a
+          class="nav-item"
+          :class="{ active: props.activeApp === 'actualites' }"
+          href="//"
+          >Actualités</a
+        >
+        <a
+          class="nav-item"
+          :class="{ active: props.activeApp === 'datahub' }"
+          href="/datahub/"
+          >GéoCatalogue</a
+        >
+        <a
+          class="nav-item"
+          :class="{ active: props.activeApp === 'datahub-map' }"
+          href="/datahub/"
+          >Cartothèque</a
+        >
+        <a
+          class="nav-item"
+          :class="{ active: props.activeApp === 'projets' }"
+          href="//"
+          >Projets</a
+        >
+        <a
+          class="nav-item"
+          :class="{ active: props.activeApp === 'fonctionnalites' }"
+          href="//"
+          >Fonctionnalités</a
+        >
+        <a
+          class="nav-item"
+          :class="{ active: props.activeApp === 'aide' }"
+          href="//"
+          >Aide</a
+        >
+        <span class="text-gray-400 text-xs" v-if="isWarned">
+          <a href="/console/account/changePassword">
+            {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
+            {{ t('remaining_days_msg_part2') }}
+            {{ t('remaining_days_msg_part3') }}</a
+          ></span
+        >
+      </nav>
+
+      <div></div>
+
+      <div class="flex justify-center items-center mx-6">
+        <div v-if="!isAnonymous" class="flex items-stretch">
+          <a class="btn" :href="logoutUrl"
+            ><span class="first-letter:capitalize">{{ t('logout') }}</span></a
           >
-          <a
-            class="nav-item"
-            :class="{ active: props.activeApp === 'mapstore' }"
-            href="/mapstore/"
-            >{{ t('viewer') }}</a
-          >
-          <a
-            class="nav-item"
-            :class="{ active: props.activeApp === 'mapstore-home' }"
-            href="/mapstore/#/home"
-            >{{ t('maps') }}</a
-          >
-          <a
-            class="nav-item"
-            :class="{ active: props.activeApp === 'geoserver' }"
-            href="/geoserver/web/"
-            >{{ t('services') }}</a
-          >
-          <a
-            v-if="adminRoles?.import"
-            class="nav-item"
-            href="/import/"
-            :class="{ active: props.activeApp === 'import' }"
-            >{{ t('datafeeder') }}</a
-          >
-          <span class="text-gray-400" v-if="isAdmin">|</span>
-          <div class="admin group inline-block relative" v-if="isAdmin">
-            <button class="nav-item after:hover:scale-x-0 flex items-center">
-              <span class="mr-2 first-letter:capitalize">{{ t('admin') }}</span>
+          <div class="btn-user group inline-block relative">
+            <button
+              type="button"
+              class="btn btn-outline after:hover:scale-x-0 flex items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="currentColor"
+              >
+                <path
+                  d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z"
+                ></path>
+              </svg>
+              <span class="truncate">{{
+                `${state.user?.firstname} ${state.user?.lastname}`
+              }}</span>
               <ChevronDownIcon
-                class="w-4 h-4"
-                stroke-width="4"
+                class="w-4 h-4 ml-2"
+                stroke-width="2"
               ></ChevronDownIcon>
             </button>
             <ul
-              class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[1002] bg-white"
+              class="absolute right-0 origin-top-right hidden group-hover:block border rounded-lg admin-dropdown z-[1002] bg-white shadow-md"
             >
-              <li :class="{ active: props.activeApp === 'geonetwork' }">
+              <li>
                 <a
-                  class="catalog"
-                  v-if="adminRoles?.catalog || adminRoles?.catalogAdmin"
-                  :href="
-                    adminRoles?.catalogAdmin
-                      ? `/geonetwork/srv/${state.lang3}/admin.console`
-                      : `/geonetwork/srv/${state.lang3}/catalog.edit#/board`
-                  "
+                  href="/console/account/userdetails"
+                  :title="`${state.user?.firstname} ${state.user?.lastname}`"
                 >
-                  <CatalogIcon class="icon-dropdown"></CatalogIcon>
-                  {{ t('catalogue') }}</a
+                  Mon compte</a
                 >
               </li>
-              <li :class="{ active: props.activeApp === 'msadmin' }">
-                <a href="/mapstore/#/admin" v-if="adminRoles?.viewer" class="">
-                  <MapIcon class="icon-dropdown"></MapIcon>
-                  {{ t('viewer') }}</a
+              <div v-if="isAdmin">
+                <hr />
+                <p>Outils d'administration</p>
+                <li :class="{ active: props.activeApp === 'geonetwork' }">
+                  <a
+                    class="catalog"
+                    v-if="adminRoles?.catalog || adminRoles?.catalogAdmin"
+                    :href="
+                      adminRoles?.catalogAdmin
+                        ? `/geonetwork/srv/${state.lang3}/admin.console`
+                        : `/geonetwork/srv/${state.lang3}/catalog.edit#/board`
+                    "
+                  >
+                    {{ t('catalogue') }}</a
+                  >
+                </li>
+                <li :class="{ active: props.activeApp === 'msadmin' }">
+                  <a
+                    href="/mapstore/#/admin"
+                    v-if="adminRoles?.viewer"
+                    class=""
+                  >
+                    {{ t('viewer') }}</a
+                  >
+                </li>
+                <li :class="{ active: props.activeApp === 'console' }">
+                  <a
+                    href="/console/manager/home"
+                    v-if="adminRoles?.console"
+                    class="console"
+                  >
+                    {{ t('users') }}</a
+                  >
+                </li>
+                <li
+                  :class="{ active: props.activeApp === 'analytics' }"
+                  v-if="state.platformInfos?.analyticsEnabled"
                 >
-              </li>
-              <li :class="{ active: props.activeApp === 'console' }">
-                <a
-                  href="/console/manager/home"
-                  v-if="adminRoles?.console"
-                  class="console"
-                >
-                  <UsersIcon class="icon-dropdown"></UsersIcon>
-                  {{ t('users') }}</a
-                >
-              </li>
-              <li
-                :class="{ active: props.activeApp === 'analytics' }"
-                v-if="state.platformInfos?.analyticsEnabled"
-              >
-                <a href="/analytics/" class="analytics">
-                  <ChartPieIcon class="icon-dropdown"></ChartPieIcon>
-                  analytics</a
-                >
-              </li>
+                  <a href="/analytics/" class="analytics"> analytics</a>
+                </li>
+              </div>
             </ul>
           </div>
-          <span class="text-gray-400 text-xs" v-if="isWarned">
-            <a href="/console/account/changePassword">
-              {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
-              {{ t('remaining_days_msg_part2') }}
-              {{ t('remaining_days_msg_part3') }}</a
-            ></span
-          >
-        </nav>
-      </div>
-      <div></div>
-      <div class="flex justify-center items-center mx-6">
-        <div v-if="!isAnonymous" class="flex gap-4 items-baseline">
-          <a
-            class="link-btn"
-            href="/console/account/userdetails"
-            :title="`${state.user?.firstname} ${state.user?.lastname}`"
-          >
-            <UserIcon class="font-bold text-3xl inline-block"></UserIcon>
-            <span class="text-xs max-w-[120px] truncate">{{
-              `${state.user?.firstname} ${state.user?.lastname}`
-            }}</span></a
-          >
-          <a class="link-btn" :href="logoutUrl"
-            ><span class="first-letter:capitalize">{{ t('logout') }}</span></a
-          >
         </div>
         <a
           v-if="props.hideLogin !== 'true' && isAnonymous"
@@ -215,11 +243,13 @@ onMounted(() => {
         >
       </div>
     </div>
-    <div class="flex-col sm:hidden w-full h-full">
+    <div class="header__navMobile flex-col lg:hidden w-full h-full">
       <div
         class="h-full inline-flex items-center justify-start align-middle px-6 py-8 shrink-0 w-full bg-primary/10"
       >
-        <div class="grow flex justify-start items-center py-3">
+        <div
+          class="header__navMobileBrand grow flex justify-start items-center py-3"
+        >
           <span class="inline-flex items-center rounded-full">
             <button type="button" @click="toggleMenu">
               <svg
@@ -250,7 +280,7 @@ onMounted(() => {
                 v-if="props.logoUrl"
                 :src="props.logoUrl"
                 alt="geOrchestra logo"
-                class="w-24 ml-4"
+                class="w-48 ml-4"
               />
               <GeorchestraLogo
                 v-else
@@ -267,9 +297,9 @@ onMounted(() => {
                 `${state.user?.firstname} ${state.user?.lastname}`
               }}</span></a
             >
-            <a class="link-btn" :href="logoutUrl">logout</a>
+            <a class="link-btn" :href="logoutUrl">Déconnexion</a>
           </div>
-          <a v-else class="btn" :href="loginUrl">login</a>
+          <a v-else class="btn" :href="loginUrl">Connexion</a>
         </div>
       </div>
 
@@ -277,13 +307,13 @@ onMounted(() => {
         class="absolute z-[1000] bg-white w-full duration-300 transition-opacity ease-in-out"
       >
         <nav class="flex flex-col font-semibold" v-if="state.mobileMenuOpen">
-          <a class="nav-item-mobile" href="/datahub/">{{ t('catalogue') }}</a>
-          <a class="nav-item-mobile" href="/mapstore/">{{ t('viewer') }}</a>
-          <a class="nav-item-mobile" href="/mapstore/#/home">{{ t('maps') }}</a>
-          <a class="nav-item-mobile" href="/geoserver/">{{ t('services') }}</a>
-          <a v-if="!isAnonymous" class="nav-item-mobile" href="/import/">{{
-            t('datafeeder')
-          }}</a>
+          <a class="nav-item-mobile" href="//">Service SIG</a>
+          <a class="nav-item-mobile" href="//">Actualités</a>
+          <a class="nav-item-mobile" href="/datahub/">GéoCatalogue</a>
+          <a class="nav-item-mobile" href="//">Cartothèque</a>
+          <a class="nav-item-mobile" href="//">Projets</a>
+          <a class="nav-item-mobile" href="//">Fonctionnalités</a>
+          <a class="nav-item-mobile" href="//">Aide</a>
         </nav>
       </div>
     </div>
