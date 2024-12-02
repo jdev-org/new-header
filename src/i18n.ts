@@ -4,6 +4,7 @@ import fr from './i18n/fr.json'
 import es from './i18n/es.json'
 import nl from './i18n/nl.json'
 import ru from './i18n/ru.json'
+import pt from './i18n/pt.json'
 import { createI18n } from 'vue-i18n'
 
 const i18n = createI18n({
@@ -16,6 +17,7 @@ const i18n = createI18n({
     es: es,
     nl: nl,
     ru: ru,
+    pt: pt,
   },
 })
 
