@@ -144,7 +144,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div v-if="props.legacyHeader && state.loaded">
+  <div v-if="props.legacyHeader === 'true' && state.loaded">
     <iframe
       class="w-full"
       v-bind:src="`${props.legacyUrl}${
