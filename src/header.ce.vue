@@ -213,7 +213,7 @@ onMounted(() => {
                     class="item-icon"
                     style="font-size: 0.9rem"
                   ></i>
-                  <span class="ml-1">
+                  <span class="ml-1 first-letter:capitalize">
                     {{
                       (item as Link).i18n
                         ? t((item as Link).i18n)
