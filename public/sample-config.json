@@ -1,59 +1,82 @@
 {
   "config": {
-    "stylesheet": "/public/georchestra.css",
-    "logoUrl": "/public/logo-mel.jpg",
+    "stylesheet": "/georchestra.css",
+    "logoUrl": "/jDev.logo_globe.white.png",
     "hideLogin": false,
-    "iconsUrl": "https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css",
-    "lang": "es"
+    "iconsUrl": "/",
+    "lang": "fr"
   },
   "menu": [
     {
       "label": "Catalogue",
-      "i18n": "datahub",
-      "url": "/datahub/",
+      "i18n": "catalogue",
+      "url": "/geoserver/datahub",
       "activeAppUrl": "/datahub"
     },
     {
-      "label": "WMS/WFS",
-      "i18n": "customi18n",
+      "label": "Visualiseur",
+      "i18n": "viewer",
       "url": "/geoserver/web",
-      "activeAppUrl": "includes:/geoserver",
-      "icon": "iconoir-map"
+      "activeAppUrl": "/web"
     },
     {
-      "type": "separator"
+      "label": "Cartes",
+      "i18n": "map",
+      "url": "https://google.com",
+      "activeAppUrl": "/map"
+    },
+    {
+      "label": "Applications",
+      "i18n": "apps",
+      "url": "/geoserver/app",
+      "activeAppUrl": "/app"
+    },
+    {
+      "label": "Services",
+      "i18n": "services",
+      "url": "/geoserver/service",
+      "activeAppUrl": "/service"
+    },
+    {
+      "type": "separator",
+      "hasRole": "ROLE_GN_EDITOR",
+      "blockedRole": "ROLE_SUPERUSER, ROLE_GN_REVIEWER, ROLE_GN_ADMIN"
     },
     {
       "type": "dropdown",
-      "label": "A dropdown",
+      "label": "Outils d'administration",
+      "hasRole": "ROLE_GN_EDITOR",
+      "blockedRole": "ROLE_SUPERUSER, ROLE_GN_REVIEWER, ROLE_GN_ADMIN",
       "items": [
         {
-          "label": "Console",
-          "i18n": "users",
+          "label": "Catalogue",
+          "i18n": "catalogue",
           "url": "/console/manager/home",
-          "activeAppUrl": "/console",
-          "icon": "iconoir-globe"
+          "activeAppUrl": "/link1",
+          "icon": "folder-open-regular.svg"
         },
         {
-          "label": "Geonetwork",
-          "i18n": "catalogue",
-          "url": "/geonetwork/srv/:lang3/catalog.edit#/board",
-          "activeAppUrl": "/geonetwork",
-          "hasRole": "ROLE_GN_EDITOR",
-          "blockedRole": "ROLE_SUPERUSER,ROLE_GN_REVIEWER,ROLE_GN_ADMIN"
+          "label": "Visualiseur",
+          "i18n": "visualiseur",
+          "url": "",
+          "activeAppUrl": "/link2",
+          "icon": "eye-solid.svg"
+        },
+        {
+          "label": "Analytics",
+          "i18n": "analytics",
+          "url": "",
+          "activeAppUrl": "/link3",
+          "icon": "chart-line-solid.svg"
+        },
+        {
+          "label": "Utilisateurs",
+          "i18n": "users",
+          "url": "",
+          "activeAppUrl": "/link4",
+          "icon": "users-solid.svg"
         }
       ]
     }
-  ],
-  "i18n": {
-    "en": {
-      "customi18n": "WMS/WFS service"
-    },
-    "fr": {
-      "customi18n": "Service WMS/WFS"
-    },
-    "es": {
-      "customi18n": "Servicio WMS/WFS"
-    }
-  }
+  ]
 }

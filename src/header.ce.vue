@@ -178,10 +178,12 @@ onMounted(() => {
       --georchestra-header-secondary-light: #1b1f3b1a; }
     </component>
     <div
-      class="justify-between text-slate-600 md:flex hidden h-full bg-white md:text-sm"
+      class="justify-between text-slate-600 md:flex hidden h-full md:text-sm"
+      id="header-container"
     >
-      <div class="flex">
+      <div class="flex justify-start items-center">
         <a
+          id="logo-container"
           href="/"
           class="flex justify-center items-center lg:px-3 md:px-2 py-2"
         >
@@ -189,108 +191,108 @@ onMounted(() => {
             v-if="props.logoUrl || state.config.logoUrl"
             :src="props.logoUrl || state.config.logoUrl"
             alt="geOrchestra logo"
-            class="w-32"
+            class="w-logo"
           />
           <template v-else>
             <GeorchestraLogo class="w-full h-12 my-auto"></GeorchestraLogo>
           </template>
+          <div id="logo-name">Jdev</div>
         </a>
-        <nav class="flex justify-center items-center font-semibold">
-          <template v-for="(item, index) in state.menu" :key="index">
-            <template v-if="!item.type && checkCondition(item)">
-              <a
-                :href="(item as Link).url"
-                class="nav-item"
-                @click="state.activeAppUrl = (item as Link).activeAppUrl"
-                :class="{
-                  active: (item as Link).activeAppUrl == state.activeAppUrl,
-                }"
-              >
-                <div class="flex items-center">
-                  <i
-                    v-if="(item as Link).icon"
-                    :class="(item as Link).icon"
-                    class="item-icon"
-                    style="font-size: 0.9rem"
-                  ></i>
-                  <span class="ml-1 first-letter:capitalize">
-                    {{
-                      (item as Link).i18n
-                        ? t((item as Link).i18n)
-                        : (item as Link).label
-                    }}
-                  </span>
-                </div>
-              </a>
-            </template>
-            <template
-              v-else-if="(item as Separator).type === 'separator' && checkCondition(item)"
-            >
-              <span class="text-gray-400">|</span>
-            </template>
-            <template
-              v-else-if="item.type === 'dropdown' && checkCondition(item)"
-            >
-              <div class="group inline-block relative">
-                <button
-                  class="nav-item after:hover:scale-x-0 flex items-center"
-                >
-                  <span class="lg:mr-2 md:mr-1 first-letter:capitalize">{{
-                    (item as Dropdown).i18n
-                      ? t((item as Dropdown).i18n)
-                      : (item as Dropdown).label
-                  }}</span>
-                  <ChevronDownIcon
-                    class="w-4 h-4"
-                    stroke-width="4"
-                  ></ChevronDownIcon>
-                </button>
-                <ul
-                  class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[1002] bg-white"
-                >
-                  <template
-                    v-for="(subitem, subindex) in (item as Dropdown).items"
-                    :key="subindex"
-                  >
-                    <li
-                      v-if="checkCondition(subitem)"
-                      @click="state.activeAppUrl = (item as Link).activeAppUrl"
-                      :class="{
-                        active: (subitem as Link).activeAppUrl == state.activeAppUrl,
-                      }"
-                    >
-                      <a
-                        :href="replaceUrlsVariables(subitem.url)"
-                        class="capitalize !flex justify-center items-center"
-                      >
-                        <i
-                          v-if="subitem.icon"
-                          :class="subitem.icon"
-                          class="pr-1 block pb-[2px] subitem-icon"
-                          style="font-size: 1rem"
-                        ></i>
-                        <span class="block">{{
-                          subitem.i18n ? t(subitem.i18n) : subitem.label
-                        }}</span>
-                      </a>
-                    </li>
-                  </template>
-                </ul>
-              </div>
-            </template>
-          </template>
-
-          <span class="text-gray-400 text-xs" v-if="isWarned">
-            <a href="/console/account/changePassword">
-              {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
-              {{ t('remaining_days_msg_part2') }}
-              {{ t('remaining_days_msg_part3') }}</a
-            ></span
-          >
-        </nav>
       </div>
-      <div></div>
-      <div class="flex justify-center items-center mx-6">
+      <nav class="flex justify-center items-center font-semibold">
+        <template v-for="(item, index) in state.menu" :key="index">
+          <template v-if="!item.type && checkCondition(item)">
+            <a
+              :href="(item as Link).url"
+              class="nav-item"
+              :class="{
+                active: (item as Link).activeAppUrl === state.activeAppUrl,
+              }"
+            >
+              <div class="flex items-center">
+                <i
+                  v-if="(item as Link).icon"
+                  :class="(item as Link).icon"
+                  class="item-icon"
+                  style="font-size: 0.9rem"
+                ></i>
+                <span class="first-letter:capitalize">
+                  {{
+                    (item as Link).i18n
+                      ? t((item as Link).i18n)
+                      : (item as Link).label
+                  }}
+                </span>
+              </div>
+            </a>
+          </template>
+          <template
+            v-else-if="(item as Separator).type === 'separator' && checkCondition(item)"
+          >
+            <span class="text-gray-400" id="separator">|</span>
+          </template>
+          <template
+            v-else-if="item.type === 'dropdown' && checkCondition(item)"
+          >
+            <div class="group inline-block relative">
+              <button
+                class="nav-item after:hover:scale-x-0 flex items-center"
+                id="dropdown-button"
+              >
+                <span class="lg:mr-2 md:mr-1 first-letter:capitalize">{{
+                  (item as Dropdown).i18n
+                    ? t((item as Dropdown).i18n)
+                    : (item as Dropdown).label
+                }}</span>
+                <ChevronDownIcon
+                  class="w-4 h-4"
+                  stroke-width="4"
+                ></ChevronDownIcon>
+              </button>
+              <ul
+                class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[1002] bg-white"
+              >
+                <template
+                  v-for="(subitem, subindex) in (item as Dropdown).items"
+                  :key="subindex"
+                >
+                  <li
+                    v-if="checkCondition(subitem)"
+                    @click="state.activeAppUrl = (subitem as Link).activeAppUrl"
+                    :class="{
+                      active: (subitem as Link).activeAppUrl === state.activeAppUrl,
+                    }"
+                  >
+                    <a
+                      :href="replaceUrlsVariables(subitem.url)"
+                      class="capitalize !flex justify-center items-center"
+                    >
+                      <img
+                        v-if="subitem.icon"
+                        :src="`${state.config.iconsUrl}${subitem.icon}`"
+                        class="pr-1 block pb-[2px] subitem-icon w-icon"
+                        style="font-size: 1rem"
+                      />
+                      <span class="block">{{
+                        subitem.i18n ? t(subitem.i18n) : subitem.label
+                      }}</span>
+                    </a>
+                  </li>
+                </template>
+              </ul>
+            </div>
+          </template>
+        </template>
+
+        <span class="text-gray-400 text-xs" v-if="isWarned">
+          <a href="/console/account/changePassword">
+            {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
+            {{ t('remaining_days_msg_part2') }}
+            {{ t('remaining_days_msg_part3') }}
+          </a>
+        </span>
+      </nav>
+      <div class="flex justify-end items-center mx-6">
         <div v-if="!isAnonymous" class="flex gap-4 items-baseline">
           <a
             class="link-btn"
@@ -408,23 +410,23 @@ onMounted(() => {
   }
 
   .nav-item {
-    @apply relative text-lg w-fit block after:hover:scale-x-100 lg:mx-3 md:mx-2 hover:text-black first-letter:capitalize text-base;
+    @apply relative text-lg w-fit block lg:mx-3 md:mx-2 hover:bg-[rgba(255,255,255,0.129)] hover:rounded first-letter:capitalize text-base py-[13px] px-[10px];
   }
 
   .nav-item:after {
-    @apply block content-[''] absolute h-[3px] bg-primary w-full scale-x-0  transition duration-300 origin-left;
+    @apply hidden;
   }
 
   .nav-item.active {
-    @apply after:scale-x-100 after:bg-primary after:bg-none text-gray-900;
+    @apply bg-[rgba(255,255,255,0.129)] rounded;
   }
 
   .btn {
-    @apply px-4 py-2 mx-2 text-slate-100 bg-primary rounded hover:bg-slate-700 transition-colors first-letter:capitalize;
+    @apply px-4 py-2 mx-2 text-primary bg-white rounded hover:bg-slate-300 transition-colors first-letter:capitalize;
   }
 
   .link-btn {
-    @apply text-primary hover:text-slate-700 hover:underline underline-offset-8 decoration-2 decoration-slate-700 flex flex-col items-center;
+    @apply text-white hover:text-white hover:underline underline-offset-8 decoration-2 decoration-white flex flex-col items-center;
   }
 
   .admin-dropdown > li {
@@ -433,10 +435,6 @@ onMounted(() => {
 
   .admin-dropdown > li > a {
     @apply block w-full h-full py-3;
-  }
-
-  .admin-dropdown > li.active {
-    @apply bg-primary-light;
   }
 
   .icon-dropdown {

@@ -9,6 +9,10 @@ module.exports = {
         'primary-light': 'var(--georchestra-header-primary-light)',
         'secondary-light': 'var(--georchestra-header-secondary-light)',
       },
+      width: {
+        logo: '30px',
+        icon: '20px',
+      },
     },
   },
   variants: {
