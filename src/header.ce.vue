@@ -205,7 +205,7 @@ onMounted(() => {
             <a
               :href="(item as Link).url"
               class="nav-item"
-              :target="item.label === 'Applications' ? '_blank' : '_self'"
+              :target="(item as Link).openInNewTab ? '_blank' : '_self'"
               :class="{
                 active: (item as Link).activeAppUrl === state.activeAppUrl,
               }"

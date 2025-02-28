@@ -30,7 +30,8 @@
       "label": "Applications",
       "i18n": "apps",
       "url": "https://jdev.fr/resources/mviewer_catalog.html",
-      "activeAppUrl": "/mapstore/#/home/"
+      "activeAppUrl": "/mapstore/#/home/",
+      "openInNewTab": true
     },
     {
       "label": "Services",
