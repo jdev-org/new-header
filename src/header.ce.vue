@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { getUserDetails, getPlatformInfos } from './auth'
 import type { User, PlatformInfos } from './auth'
 import UserIcon from './ui/UserIcon.vue'
-import GeorchestraLogo from '@/ui/GeorchestraLogo.vue'
 import ChevronDownIcon from '@/ui/ChevronDownIcon.vue'
 import { getI18n, t } from '@/i18n'
 import type { Link, Separator, Dropdown, Config } from '@/config-interfaces'
 import { defaultMenu, defaultConfig } from '@/default-config.json'
+import SantegraphieLogo from './ui/SantegraphieLogo.vue'
 
 const props = defineProps<{
   activeApp?: string
@@ -24,6 +24,7 @@ const state = reactive({
   mobileMenuOpen: false,
   platformInfos: null as null | PlatformInfos,
   menu: defaultMenu as (Link | Separator | Dropdown)[],
+  sub_menu: defaultMenu as (Link | Separator | Dropdown)[],
   config: defaultConfig as Config,
   lang3: 'eng',
   loaded: false,
@@ -120,6 +121,18 @@ function setI18nAndActiveApp(i18n?: any) {
   state.loaded = true
 }
 
+// Gestion du dropdown
+const dropdownVisible = ref(false)
+const toggleDropdown = () => {
+  dropdownVisible.value = !dropdownVisible.value
+  console.log(dropdownVisible)
+}
+// document.addEventListener("click", (event) => {
+//   if (event.target instanceof Element && !event?.target?.closest("#profil_btn") && !event?.target?.closest(".dropdown-menu")) {
+//     dropdownVisible.value = false;
+//   }
+// });
+
 onMounted(() => {
   getUserDetails().then(user => {
     state.user = user
@@ -131,6 +144,7 @@ onMounted(() => {
           state.config = Object.assign({}, state.config, json.config)
           if (json.menu) {
             state.menu = json.menu
+            state.sub_menu = json.sub_menu
           }
           setI18nAndActiveApp(json.i18n)
         })
@@ -172,32 +186,41 @@ onMounted(() => {
       :is="'style'"
       v-if="!props.stylesheet && !state.config.stylesheet"
     >
-      header { --georchestra-header-primary: #85127e;
-      --georchestra-header-secondary: #1b1f3b;
-      --georchestra-header-primary-light: #85127e1a;
-      --georchestra-header-secondary-light: #1b1f3b1a; }
+      header { --georchestra-header-primary: #07c8e2;
+      --georchestra-header-secondary: white; --georchestra-header-primary-light:
+      white; --georchestra-header-secondary-light: #eee;
+      --georchestra-header-primary-dark: #0d8fa0;}
     </component>
     <div
       class="justify-between text-slate-600 md:flex hidden h-full bg-white md:text-sm"
     >
       <div class="flex">
         <a
+          id="homePageTitle"
           href="/"
-          class="flex justify-center items-center lg:px-3 md:px-2 py-2"
+          class="flex flex-col justify-center items-center lg:px-3 md:px-2 py-2"
         >
           <img
             v-if="props.logoUrl || state.config.logoUrl"
             :src="props.logoUrl || state.config.logoUrl"
-            alt="geOrchestra logo"
-            class="w-32"
+            alt="santegraphie logo"
+            class="w-full"
           />
           <template v-else>
-            <GeorchestraLogo class="w-full h-12 my-auto"></GeorchestraLogo>
+            <SantegraphieLogo class="w-full h-12 my-auto"></SantegraphieLogo>
           </template>
+          <h4>La santé se met en cartes</h4>
         </a>
         <nav class="flex justify-center items-center font-semibold">
           <template v-for="(item, index) in state.menu" :key="index">
-            <template v-if="!item.type && checkCondition(item)">
+            <template
+              v-if="
+                !item.type &&
+                checkCondition(item) &&
+                'label' in item &&
+                item.label !== 'Tutoriels'
+              "
+            >
               <a
                 :href="(item as Link).url"
                 class="nav-item"
@@ -207,12 +230,12 @@ onMounted(() => {
                 }"
               >
                 <div class="flex items-center">
-                  <i
+                  <img
                     v-if="(item as Link).icon"
-                    :class="(item as Link).icon"
+                    :src="(item as Link).icon"
                     class="item-icon"
-                    style="font-size: 0.9rem"
-                  ></i>
+                    style="height: 1.3rem"
+                  />
                   <span class="ml-1 first-letter:capitalize">
                     {{
                       (item as Link).i18n
@@ -291,27 +314,89 @@ onMounted(() => {
       </div>
       <div></div>
       <div class="flex justify-center items-center mx-6">
-        <div v-if="!isAnonymous" class="flex gap-4 items-baseline">
-          <a
-            class="link-btn"
-            href="/console/account/userdetails"
-            :title="`${state.user?.firstname} ${state.user?.lastname}`"
+        <!-- Onglet Tutoriels -->
+        <template v-for="(item, index) in state.menu" :key="index">
+          <template
+            v-if="
+              !item.type &&
+              checkCondition(item) &&
+              'label' in item &&
+              item.label === 'Tutoriels'
+            "
           >
-            <UserIcon class="font-bold text-3xl inline-block"></UserIcon>
-            <span class="text-xs max-w-[120px] truncate">{{
-              `${state.user?.firstname} ${state.user?.lastname}`
-            }}</span></a
-          >
-          <a class="link-btn" :href="logoutUrl"
-            ><span class="first-letter:capitalize">{{ t('logout') }}</span></a
-          >
-        </div>
+            <a
+              :href="(item as Link).url"
+              class="nav-item"
+              @click="state.activeAppUrl = (item as Link).activeAppUrl"
+              :class="{
+                active: (item as Link).activeAppUrl == state.activeAppUrl,
+              }"
+            >
+              <div class="flex items-center">
+                <img
+                  v-if="(item as Link).icon"
+                  :src="(item as Link).icon"
+                  class="item-icon"
+                  style="height: 1.3rem"
+                />
+                <span class="ml-1 first-letter:capitalize">
+                  {{
+                    (item as Link).i18n
+                      ? t((item as Link).i18n)
+                      : (item as Link).label
+                  }}
+                </span>
+              </div>
+            </a>
+          </template>
+        </template>
+        <!---->
+
+        <!-- Login / Dropdown admin -->
         <a
           v-if="!state.config.hideLogin && isAnonymous"
           class="btn"
           :href="loginUrl"
           >{{ t('login') }}</a
         >
+        <a v-else id="profil_btn" class="btn" @click="toggleDropdown">
+          <UserIcon class="font-bold text-2xl inline-block"></UserIcon>
+          {{
+            `${state.user?.firstname
+              ?.charAt(0)
+              .toLowerCase()}${state.user?.lastname?.toLowerCase()}`
+          }}
+          <template v-if="dropdownVisible">
+            <div class="dropdown-menu">
+              <ul>
+                <li v-for="(item, index) in state.sub_menu" :key="index">
+                  <a
+                    :href="(item as Link).url"
+                    :class="{
+                      active: (item as Link).activeAppUrl == state.activeAppUrl,
+                    }"
+                  >
+                    <span class="ml-1 first-letter:capitalize">
+                      {{
+                        (item as Link).i18n
+                          ? t((item as Link).i18n)
+                          : (item as Link).label
+                      }}
+                    </span>
+                  </a>
+                </li>
+              </ul>
+              <div v-if="!isAnonymous" class="flex p-4 items-baseline">
+                <a class="link-btn" :href="logoutUrl"
+                  ><span class="first-letter:capitalize">{{
+                    t('logout')
+                  }}</span></a
+                >
+              </div>
+            </div>
+          </template>
+        </a>
+        <!---->
       </div>
     </div>
     <div class="flex-col md:hidden w-full h-full">
@@ -354,7 +439,7 @@ onMounted(() => {
                 alt="geOrchestra logo"
                 class="w-24"
               />
-              <GeorchestraLogo v-else></GeorchestraLogo>
+              <SantegraphieLogo v-else></SantegraphieLogo>
             </a>
           </span>
         </div>

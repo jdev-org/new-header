@@ -1,8 +1,9 @@
 # Configuration file
 
-A configuration file can be set to customize the header. 
+A configuration file can be set to customize the header.
 
 Inside it, you can set the following properties:
+
 ```json
 {
   "config": {},
@@ -14,6 +15,7 @@ Inside it, you can set the following properties:
 ## Config
 
 Config can contains old tag attributes :
+
 ```json
   "config": {
     "stylesheet": "https://data.lillemetropole.fr/public/georchestra.css",
@@ -35,23 +37,23 @@ There's actually just one level of dropdowns. You cannot have a dropdown inside 
 
 To see the actual structure of the menu, you can check the [menu interface](./src/default-config.json)
 
-### Active tab matching 
+### Active tab matching
 
-A decision has been made in order to have the best match between the active tab and the current page. 
+A decision has been made in order to have the best match between the active tab and the current page.
 
 If two conditions can be resolved for a link to be active, the longest one will be used.
 
 URL of tab : /mapstore/#/home
 
-- Condition 1 : activeAppUrl /mapstore 
+- Condition 1 : activeAppUrl /mapstore
 - Condition 2 : activeAppUrl /mapstore/#/home
 
 Condition 2 will be used because /mapstore/#/home = 16 characters.
 
-
 ## i18n
 
-In addition to translations set in [./src/i18n/](./src/i18n/), you can add custom translations : 
+In addition to translations set in [./src/i18n/](./src/i18n/), you can add custom translations :
+
 ```json
 {
   "i18n": {

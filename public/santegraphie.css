@@ -1,0 +1,56 @@
+header {
+  --georchestra-header-primary: #3dabb1;
+  --georchestra-header-secondary: white;
+  --georchestra-header-primary-light: white;
+  --georchestra-header-secondary-light: #eee;
+  --georchestra-header-primary-dark: #33888c;
+}
+
+.admin-dropdown > li.active {
+  background-color: var(--georchestra-header-primary);
+  color: white;
+}
+
+#homePageTitle h4 {
+  color: var(--georchestra-header-primary);
+  font-family: var(--fontMarianne);
+}
+
+.nav-item span {
+  color: var(--georchestra-header-primary);
+}
+
+#profil_btn {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  z-index: 1000;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgb(204, 204, 204);
+  white-space: nowrap;
+  min-width: 150px;
+}
+
+.dropdown-menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu li {
+  padding: 8px 12px;
+}
+
+.dropdown-menu li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+}

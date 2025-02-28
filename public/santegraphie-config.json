@@ -1,0 +1,92 @@
+{
+  "config": {
+    "stylesheet": "/public/santegraphie.css",
+    "logoUrl": "/public/logo_santegraphie_web.svg",
+    "hideLogin": false,
+    "lang": "fr",
+    "iconsUrl": "/public/"
+  },
+  "menu": [
+    {
+      "label": "Cartotheque",
+      "i18n": "cartotheque",
+      "url": "/mviewer/catalogue/",
+      "activeAppUrl": "includes:/catalogue",
+      "icon": "/public/icon_catalogApp.svg"
+    },
+    {
+      "label": "Data",
+      "i18n": "data",
+      "url": "/datahub",
+      "activeAppUrl": "includes:/datahub",
+      "icon": "/public/icon_catalogData.svg"
+    },
+    {
+      "label": "Carte_Simple",
+      "i18n": "carte_simple",
+      "url": "/analyse/",
+      "activeAppUrl": "includes:/analyse",
+      "icon": "/public/icon_mapTool.svg"
+    },
+    {
+      "label": "Carte_Evoluee",
+      "i18n": "carte_evoluee",
+      "url": "/mapstore/",
+      "activeAppUrl": "includes:/mapstore",
+      "icon": "/public/icon_map.svg"
+    },
+    {
+      "label": "Tutoriels",
+      "i18n": "tutoriels",
+      "url": "/tutoriels",
+      "activeAppUrl": "includes:/tutoriels",
+      "icon": "/public/tutoriels.svg"
+    }
+  ],
+  "sub_menu": [
+    {
+      "label": "Mes_Cartes",
+      "i18n": "my_maps",
+      "url": "/mapstore/#/home"
+    },
+    {
+      "label": "Mon_Compte",
+      "i18n": "my_account",
+      "url": "/console/account/userdetails"
+    },
+    {
+      "label": "Catalogue",
+      "i18n": "catalogue",
+      "url": "/geonetwork/srv/fre/catalog.search#/home",
+      "hasRole": "ROLE_GN_ADMIN"
+    },
+    {
+      "label": "Services",
+      "i18n": "services",
+      "url": "/geoserver"
+    },
+    {
+      "label": "Cartes_Admin",
+      "i18n": "admin_maps",
+      "url": "/mapstore/#/admin",
+      "hasRole": "ROLE_MAPSTORE_ADMIN"
+    },
+    {
+      "label": "Utilisateurs",
+      "i18n": "users",
+      "url": "/users",
+      "hasRole": "ROLE_SUPERUSER"
+    }
+  ],
+  "i18n": {
+    "en": {
+      "customi18n": "WMS/WFS service"
+    },
+    "fr": {
+      "customi18n": "Service WMS/WFS"
+    },
+    "es": {
+      "customi18n": "Servicio WMS/WFS"
+    }
+  }
+}
