@@ -1,0 +1,77 @@
+{
+  "config": {
+    "stylesheet": "/georchestra.css",
+    "logoUrl": "/jDev.logo_globe.white.png",
+    "hideLogin": false,
+    "iconsUrl": "/",
+    "lang": "fr"
+  },
+  "menu": [
+    {
+      "label": "Catalogue",
+      "i18n": "catalogue",
+      "url": "/datahub",
+      "activeAppUrl": "/datahub"
+    },
+    {
+      "label": "Création d'application",
+      "i18n": "mviewerstudio",
+      "hasRole": "ROLE_USER",
+      "url": "/mviewerstudio",
+      "activeAppUrl": "/mviewerstudio"
+    },
+    {
+      "label": "Cartes",
+      "i18n": "map",
+      "url": "/mapstore/#",
+      "activeAppUrl": "/mapstore/#"
+    },
+    {
+      "label": "Applications",
+      "i18n": "apps",
+      "url": "https://jdev.fr/resources/mviewer_catalog.html",
+      "activeAppUrl": "/mapstore/#/home/"
+    },
+    {
+      "label": "Services",
+      "i18n": "services",
+      "url": "/geoserver",
+      "activeAppUrl": "/geoserver"
+    },
+    {
+      "type": "separator",
+      "hasRole": "ROLE_GN_EDITOR,ROLE_SUPERUSER, ROLE_GN_REVIEWER, ROLE_GN_ADMIN, ROLE_MAPSTORE_ADMIN"
+    },
+    {
+      "type": "dropdown",
+      "label": "Outils d'administration",
+      "hasRole": "ROLE_GN_EDITOR,ROLE_SUPERUSER, ROLE_GN_REVIEWER, ROLE_GN_ADMIN, ROLE_MAPSTORE_ADMIN",
+      "items": [
+        {
+          "label": "Catalogue",
+          "i18n": "catalogue",
+          "hasRole": "ROLE_GN_EDITOR, ROLE_GN_REVIEWER, ROLE_GN_ADMIN",
+          "url": "/geonetwork",
+          "activeAppUrl": "/geonetwork",
+          "icon": "folder-open-regular.svg"
+        },
+        {
+          "label": "Visualiseur",
+          "i18n": "visualiseur",
+          "hasRole": "ROLE_MAPSTORE_ADMIN",
+          "url": "/mapstore/#/admin/",
+          "activeAppUrl": "/mapstore/#/admin/",
+          "icon": "eye-solid.svg"
+        },
+        {
+          "label": "Utilisateurs",
+          "i18n": "users",
+          "hasRole": "ROLE_SUPERUSER",
+          "url": "/console/manager/home",
+          "activeAppUrl": "/link4",
+          "icon": "users-solid.svg"
+        }
+      ]
+    }
+  ]
+}
