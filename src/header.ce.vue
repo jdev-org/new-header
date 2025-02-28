@@ -22,6 +22,7 @@ const props = defineProps<{
 const state = reactive({
   user: null as null | User,
   mobileMenuOpen: false,
+  mobileProfileOpen: false,
   platformInfos: null as null | PlatformInfos,
   menu: defaultMenu as (Link | Separator | Dropdown)[],
   sub_menu: defaultMenu as (Link | Separator | Dropdown)[],
@@ -125,7 +126,6 @@ function setI18nAndActiveApp(i18n?: any) {
 const dropdownVisible = ref(false)
 const toggleDropdown = () => {
   dropdownVisible.value = !dropdownVisible.value
-  console.log(dropdownVisible)
 }
 // document.addEventListener("click", (event) => {
 //   if (event.target instanceof Element && !event?.target?.closest("#profil_btn") && !event?.target?.closest(".dropdown-menu")) {
@@ -399,75 +399,127 @@ onMounted(() => {
         <!---->
       </div>
     </div>
+
+    <!-- Mobile Mode -->
     <div class="flex-col md:hidden w-full h-full">
       <div
-        class="h-full inline-flex items-center justify-start align-middle px-6 py-8 shrink-0 w-full bg-primary/10"
+        class="h-full inline-flex items-center justify-between align-middle px-6 py-8 shrink-0 w-full bg-primary/10"
       >
-        <div class="grow flex justify-start items-center py-3">
-          <span class="inline-flex items-center rounded-full">
-            <button
-              type="button"
-              @click="state.mobileMenuOpen = !state.mobileMenuOpen"
-            >
-              <svg
-                v-if="state.mobileMenuOpen"
-                xmlns="http://www.w3.org/2000/svg"
-                height="24"
-                viewBox="0 -960 960 960"
-                width="24"
-              >
-                <path
-                  d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
-                />
-              </svg>
-              <svg
-                v-else
-                xmlns="http://www.w3.org/2000/svg"
-                height="24"
-                viewBox="0 -960 960 960"
-                width="24"
-              >
-                <path
-                  d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
-                />
-              </svg>
-            </button>
-            <a href="/" class="block ml-3">
-              <img
-                v-if="props.logoUrl || state.config.logoUrl"
-                :src="props.logoUrl || state.config.logoUrl"
-                alt="geOrchestra logo"
-                class="w-24"
-              />
-              <SantegraphieLogo v-else></SantegraphieLogo>
-            </a>
-          </span>
-        </div>
-        <div class="flex justify-center items-center">
+        <a href="/" class="block ml-3">
+          <img
+            v-if="props.logoUrl || state.config.logoUrl"
+            :src="props.logoUrl || state.config.logoUrl"
+            alt="Santegraphie logo"
+            class="w-24"
+          />
+          <SantegraphieLogo v-else></SantegraphieLogo>
+        </a>
+        <div class="flex">
+          <!-- profile button -->
           <div v-if="!isAnonymous" class="flex gap-4 items-baseline">
-            <a class="link-btn" href="/console/account/userdetails">
-              <UserIcon class="font-bold text-3xl inline-block mr-4"></UserIcon>
-              <span>{{
-                `${state.user?.firstname} ${state.user?.lastname}`
-              }}</span></a
+            <a
+              v-if="!state.config.hideLogin && isAnonymous"
+              class="btn"
+              :href="loginUrl"
+              >{{ t('login') }}</a
             >
-            <a class="link-btn" :href="logoutUrl">{{ t('logout') }}</a>
+            <a
+              v-else
+              id="profil_btn"
+              class="btn"
+              @click="state.mobileProfileOpen = !state.mobileProfileOpen"
+            >
+              <UserIcon class="font-bold text-2xl inline-block"></UserIcon>
+              {{
+                `${state.user?.firstname
+                  ?.charAt(0)
+                  .toLowerCase()}${state.user?.lastname?.toLowerCase()}`
+              }}
+            </a>
           </div>
           <a v-else class="btn" :href="loginUrl">{{ t('login') }}</a>
+          <!-- Burger button -->
+          <button
+            type="button"
+            @click="state.mobileMenuOpen = !state.mobileMenuOpen"
+          >
+            <svg
+              v-if="state.mobileMenuOpen"
+              xmlns="http://www.w3.org/2000/svg"
+              height="24"
+              viewBox="0 -960 960 960"
+              width="24"
+            >
+              <path
+                d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+              />
+            </svg>
+            <svg
+              v-else
+              xmlns="http://www.w3.org/2000/svg"
+              height="24"
+              viewBox="0 -960 960 960"
+              width="24"
+            >
+              <path
+                d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
+              />
+            </svg>
+          </button>
         </div>
       </div>
-
+      <!-- drop-down nav -->
       <div
         class="absolute z-[1000] bg-white w-full duration-300 transition-opacity ease-in-out"
       >
         <nav class="flex flex-col font-semibold" v-if="state.mobileMenuOpen">
-          <a class="nav-item-mobile" href="/datahub/">{{ t('catalogue') }}</a>
-          <a class="nav-item-mobile" href="/mapstore/">{{ t('viewer') }}</a>
-          <a class="nav-item-mobile" href="/mapstore/#/home">{{ t('maps') }}</a>
-          <a class="nav-item-mobile" href="/geoserver/">{{ t('services') }}</a>
-          <a v-if="!isAnonymous" class="nav-item-mobile" href="/import/">{{
-            t('datafeeder')
-          }}</a>
+          <template v-for="(item, index) in state.menu" :key="index">
+            <template v-if="!item.type && checkCondition(item)">
+              <a
+                :href="(item as Link).url"
+                class="nav-item-mobile"
+                @click="state.activeAppUrl = (item as Link).activeAppUrl"
+                :class="{
+                  active: (item as Link).activeAppUrl == state.activeAppUrl,
+                }"
+              >
+                <span class="ml-1 first-letter:capitalize">
+                  {{
+                    (item as Link).i18n
+                      ? t((item as Link).i18n)
+                      : (item as Link).label
+                  }}
+                </span>
+              </a>
+            </template>
+          </template>
+        </nav>
+      </div>
+      <!-- drop-down admin -->
+      <div
+        class="absolute z-[1000] bg-white w-full duration-300 transition-opacity ease-in-out"
+      >
+        <nav class="flex flex-col font-semibold" v-if="state.mobileProfileOpen">
+          <template v-for="(item, index) in state.sub_menu" :key="index">
+            <template v-if="!item.type && checkCondition(item)">
+              <a
+                :href="(item as Link).url"
+                class="nav-item-mobile"
+                @click="state.activeAppUrl = (item as Link).activeAppUrl"
+                :class="{
+                  active: (item as Link).activeAppUrl == state.activeAppUrl,
+                }"
+              >
+                <span class="ml-1 first-letter:capitalize">
+                  {{
+                    (item as Link).i18n
+                      ? t((item as Link).i18n)
+                      : (item as Link).label
+                  }}
+                </span>
+              </a>
+            </template>
+          </template>
         </nav>
       </div>
     </div>
