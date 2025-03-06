@@ -29,7 +29,7 @@ const state = reactive({
   loaded: false,
   matchedRouteScore: 0,
   activeAppUrl: '' as string | undefined,
-  activeDropdown: null as null | number, // Add this line
+  activeDropdown: null as null | number,
 })
 
 const isAnonymous = computed(() => !state.user || state.user.anonymous)
