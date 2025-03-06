@@ -1,0 +1,23 @@
+{
+  "config": {
+    "stylesheet": "/georchestra.css",
+    "logoUrl": "/logo-megalis.png",
+    "hideLogin": false,
+    "iconsUrl": "/",
+    "lang": "fr"
+  },
+  "menu": [
+    {
+      "label": "visualiseur",
+      "i18n": "viewer",
+      "url": "https://recette-websig.megalis.bretagne.bzh/mviewer/?config=apps/BTHD.xml",
+      "activeAppUrl": "includes :/mviewer/"
+    },
+    {
+      "label": "services",
+      "i18n": "services",
+      "url": "https://recette-websig.megalis.bretagne.bzh/geoserver/web/",
+      "activeAppUrl": "includes :/geoserver/web/"
+    }
+  ]
+}

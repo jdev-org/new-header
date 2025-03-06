@@ -1,0 +1,300 @@
+/* This file is used to override the default geOrchestra theme colors */
+body {
+    --georchestra-primary: #e20714;
+    --georchestra-secondary: rgb(0, 122, 128);
+    --georchestra-primary-light: white;
+    --georchestra-secondary-light: #eee;
+  }
+  
+  /* Datafeeder */
+  body {
+    --color-primary: var(--georchestra-primary);
+    --color-primary-lighter: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #fff 30%
+    );
+    --color-primary-lightest: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #fff 50%
+    );
+    --color-primary-white: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #fff 95%
+    );
+    --color-primary-darker: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #000 30%
+    );
+    --color-primary-darkest: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #000 50%
+    );
+    --color-primary-black: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #000 90%
+    );
+    --gradient: linear-gradient(65deg, #fff 0%, var(--color-primary-white) 100%);
+  }
+  
+  /* Mapstore */
+  .geOrchestra[data-ms2-container="ms2"] {
+    --ms-primary: var(--georchestra-primary);
+    --ms-main-variant-color: rgb(0, 58, 59);
+  
+    --ms-button-color: var(--georchestra-primary);
+    --ms-link-color: color-mix(in srgb, var(--georchestra-primary), #fff 30%);
+    --ms-link-hover-color: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #fff 50%
+    );
+    --ms-loader-primary-color: var(--georchestra-primary);
+    --ms-loader-primary-fade-color: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #fff 75%
+    );
+    --ms-focus-color: color-mix(in srgb, var(--georchestra-primary), #fff 90%);
+  
+    --ms-button-bg: #fff;
+    --ms-button-border-color: #fff;
+    --ms-button-hover-color: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #fff 30%
+    );
+    --ms-button-hover-bg: color-mix(in srgb, var(--ms-button-bg), #000 15%);
+    --ms-button-hover-border-color: color-mix(
+      in srgb,
+      var(--ms-button-bg),
+      #000 15%
+    );
+    --ms-button-disabled-bg: color-mix(in srgb, var(--ms-button-bg), #fff 30%);
+    --ms-button-disabled-border-color: color-mix(
+      in srgb,
+      var(--ms-button-bg),
+      #fff 30%
+    );
+    --ms-button-active-hover-bg: color-mix(
+      in srgb,
+      var(--ms-button-bg),
+      #000 30%
+    );
+    --ms-button-active-border-color: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #000 30%
+    );
+    --ms-button-active-color: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #fff 30%
+    );
+    --ms-button-focus-border-color: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #000 30%
+    );
+    --ms-button-active-hover-border-color: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #000 30%
+    );
+    --ms-button-active-hover-color: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #000 30%
+    );
+    --ms-button-focus-color: color-mix(
+      in srgb,
+      var(--georchestra-primary),
+      #fff 30%
+    );
+  
+    --ms-button-primary-bg: var(--georchestra-primary);
+    --ms-button-primary-border-color: var(--georchestra-primary);
+    --ms-button-primary-hover-bg: color-mix(
+      in srgb,
+      var(--ms-button-primary-bg),
+      #000 15%
+    );
+    --ms-button-primary-hover-border-color: color-mix(
+      in srgb,
+      var(--ms-button-primary-bg),
+      #000 15%
+    );
+    --ms-button-primary-disabled-bg: color-mix(
+      in srgb,
+      var(--ms-button-primary-bg),
+      #fff 30%
+    );
+    --ms-button-primary-disabled-border-color: color-mix(
+      in srgb,
+      var(--ms-button-primary-bg),
+      #fff 30%
+    );
+    --ms-button-primary-active-hover-bg: color-mix(
+      in srgb,
+      var(--ms-button-primary-bg),
+      #000 30%
+    );
+    --ms-button-primary-active-border-color: color-mix(
+      in srgb,
+      var(--ms-button-primary-bg),
+      #000 30%
+    );
+    --ms-button-primary-active-bg: color-mix(
+      in srgb,
+      var(--ms-button-primary-bg),
+      #000 30%
+    );
+    --ms-button-primary-focus-hover-bg: color-mix(
+      in srgb,
+      var(--ms-button-primary-bg),
+      #000 30%
+    );
+    --ms-button-primary-focus-border-color: color-mix(
+      in srgb,
+      var(--ms-button-primary-bg),
+      #000 30%
+    );
+    --ms-button-primary-focus-bg: color-mix(
+      in srgb,
+      var(--ms-button-primary-bg),
+      #000 30%
+    );
+  
+    --ms-button-success-bg: var(--georchestra-secondary);
+    --ms-button-success-border-color: var(--georchestra-secondary);
+    --ms-button-success-hover-bg: color-mix(
+      in srgb,
+      var(--ms-button-success-bg),
+      #000 15%
+    );
+    --ms-button-success-hover-border-color: color-mix(
+      in srgb,
+      var(--ms-button-success-bg),
+      #000 15%
+    );
+    --ms-button-success-disabled-bg: color-mix(
+      in srgb,
+      var(--ms-button-success-bg),
+      #fff 30%
+    );
+    --ms-button-success-disabled-border-color: color-mix(
+      in srgb,
+      var(--ms-button-success-bg),
+      #fff 30%
+    );
+    --ms-button-success-active-bg: var(--georchestra-secondary);
+    --ms-button-success-active-border-color: var (--georchestra-secondary);
+    --ms-button-success-active-hover-bg: color-mix(
+      in srgb,
+      var(--ms-button-success-bg),
+      #000 30%
+    );
+    --ms-button-success-active-hover-border-color: color-mix(
+      in srgb,
+      var(--ms-button-success-bg),
+      #000 30%
+    );
+    --ms-button-success-focus-hover-bg: color-mix(
+      in srgb,
+      var(--ms-button-success-bg),
+      #000 30%
+    );
+    --ms-button-success-focus-border-color: color-mix(
+      in srgb,
+      var(--ms-button-success-bg),
+      #000 30%
+    );
+    --ms-button-success-focus-bg: color-mix(
+      in srgb,
+      var(--georchestra-secondary),
+      #000 30%
+    );
+  }
+  
+  .geOrchestra[data-ms2-container="ms2"] #content-tabs > div > div > h2,
+  .geOrchestra[data-ms2-container="ms2"]
+    #content-tabs-container-container
+    > div:nth-child(2)
+    > div
+    > div:nth-child(1)
+    > h3 {
+    display: none;
+  }
+  
+  ._ms2_init_center::before {
+    content: "Chargement" !important;
+  }
+  
+  header {
+    --georchestra-header-primary: #31659d;
+    --georchestra-header-secondary: white;
+    --georchestra-header-primary-light: white;
+    --georchestra-header-secondary-light: #eee;
+    --georchestra-header-primary-dark: #225e61;
+  }
+  
+  #header-container {
+    background-color: var(--georchestra-header-secondary);
+  }
+
+  #logo-container {
+    padding-left: 40px;
+  }
+
+  .link-btn {
+    color: var(--georchestra-header-primary) !important;
+    padding: 4px 8px !important;
+  }
+
+  .w-32 {
+    width: 110px;
+  }
+
+  .link-btn:hover {
+    color: black !important;
+    border-radius: 4px !important;
+    background-color: #31659d21 !important;
+    text-decoration: none !important;
+  }
+
+  .nav-item {
+    color: var(--georchestra-header-primary) !important;
+    padding: 12px !important;
+    margin: 6px;
+  }
+
+  .nav-item::after {
+    all: unset;
+  }
+
+  .nav-item:hover {
+    background-color: #31659d21 !important;
+    border-radius: 4px !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .nav-item:active {
+    background-color: #31659d21 !important;
+    border-radius: 4px !important;
+  }
+
+  .btn {
+    background-color: white;
+    color: var(--georchestra-header-primary) !important;
+  }
+
+  .btn:hover {
+    background-color: #31659d21;
+    color: black !important;
+  }
