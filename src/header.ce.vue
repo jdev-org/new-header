@@ -259,7 +259,9 @@ onMounted(() => {
                   >
                     <li
                       v-if="checkCondition(subitem)"
-                      @click="state.activeAppUrl = (item as Link).activeAppUrl"
+                      @click="
+                        state.activeAppUrl = (subitem as Link).activeAppUrl
+                      "
                       :class="{
                         active: (subitem as Link).activeAppUrl == state.activeAppUrl,
                       }"
@@ -430,7 +432,9 @@ onMounted(() => {
                   >
                     <li
                       v-if="checkCondition(subitem)"
-                      @click="state.activeAppUrl = (item as Link).activeAppUrl"
+                      @click="
+                        state.activeAppUrl = (subitem as Link).activeAppUrl
+                      "
                       :class="{
                         active: (subitem as Link).activeAppUrl == state.activeAppUrl,
                       }"
