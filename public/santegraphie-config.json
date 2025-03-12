@@ -1,7 +1,7 @@
 {
   "config": {
     "stylesheet": "/public/santegraphie.css",
-    "logoUrl": "/public/logo_santegraphie_web.svg",
+    "logoUrl": "/public/logo_santegraphie.svg",
     "hideLogin": false,
     "lang": "fr",
     "iconsUrl": "/public/"
@@ -74,7 +74,7 @@
     {
       "label": "Utilisateurs",
       "i18n": "users",
-      "url": "/users",
+      "url": "/console",
       "hasRole": "ROLE_SUPERUSER"
     }
   ],
