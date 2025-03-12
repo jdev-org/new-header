@@ -8,6 +8,11 @@ import { getI18n, t } from '@/i18n'
 import type { Link, Separator, Dropdown, Config } from '@/config-interfaces'
 import { defaultMenu, defaultConfig } from '@/default-config.json'
 import SantegraphieLogo from './ui/SantegraphieLogo.vue'
+import CatalogueIcon from './ui/catalogueIcon.vue'
+import DataIcon from './ui/dataIcon.vue'
+import SimpleMap from './ui/simpleMap.vue'
+import ComplexMap from './ui/complexMap.vue'
+import TutorielsIcon from './ui/TutorielsIcon.vue'
 
 const props = defineProps<{
   activeApp?: string
@@ -122,16 +127,30 @@ function setI18nAndActiveApp(i18n?: any) {
   state.loaded = true
 }
 
+let isSantegraphieConfigAvailable = false
+
+const checkConfigFile = () => {
+  fetch('/public/santegraphie-config.json', {
+    method: 'HEAD',
+  })
+    .then(response => {
+      if (response.ok) {
+        isSantegraphieConfigAvailable = true
+      } else {
+        isSantegraphieConfigAvailable = false
+      }
+    })
+    .catch(error => {
+      console.error('Erreur lors de la vérification du fichier:', error)
+      isSantegraphieConfigAvailable = false
+    })
+}
+
 // Gestion du dropdown
 const dropdownVisible = ref(false)
 const toggleDropdown = () => {
   dropdownVisible.value = !dropdownVisible.value
 }
-// document.addEventListener("click", (event) => {
-//   if (event.target instanceof Element && !event?.target?.closest("#profil_btn") && !event?.target?.closest(".dropdown-menu")) {
-//     dropdownVisible.value = false;
-//   }
-// });
 
 onMounted(() => {
   getUserDetails().then(user => {
@@ -155,6 +174,7 @@ onMounted(() => {
       )
     }
   })
+  checkConfigFile()
 })
 </script>
 <template>
@@ -209,16 +229,177 @@ onMounted(() => {
           <template v-else>
             <SantegraphieLogo class="w-full h-12 my-auto"></SantegraphieLogo>
           </template>
-          <h4>La santé se met en cartes</h4>
         </a>
         <nav class="flex justify-center items-center font-semibold">
+          <template v-if="isSantegraphieConfigAvailable === true">
+            <template v-for="(item, index) in state.menu" :key="index">
+              <template
+                v-if="
+                  !item.type &&
+                  checkCondition(item) &&
+                  'label' in item &&
+                  item.label !== 'Tutoriels'
+                "
+              >
+                <a
+                  :href="(item as Link).url"
+                  class="nav-item"
+                  @click="state.activeAppUrl = (item as Link).activeAppUrl"
+                  :class="{
+                  active: (item as Link).activeAppUrl == state.activeAppUrl,
+                }"
+                >
+                  <div class="flex items-center">
+                    <img
+                      v-if="(item as Link).icon"
+                      :src="(item as Link).icon"
+                      class="item-icon"
+                      style="height: 1.3rem"
+                    />
+                    <span class="ml-1 first-letter:capitalize">
+                      {{
+                        (item as Link).i18n
+                          ? t((item as Link).i18n)
+                          : (item as Link).label
+                      }}
+                    </span>
+                  </div>
+                </a>
+              </template>
+              <template
+                v-else-if="(item as Separator).type === 'separator' && checkCondition(item)"
+              >
+                <span class="text-gray-400">|</span>
+              </template>
+              <template
+                v-else-if="item.type === 'dropdown' && checkCondition(item)"
+              >
+                <div class="group inline-block relative">
+                  <button
+                    class="nav-item after:hover:scale-x-0 flex items-center"
+                  >
+                    <span class="lg:mr-2 md:mr-1 first-letter:capitalize">{{
+                      (item as Dropdown).i18n
+                        ? t((item as Dropdown).i18n)
+                        : (item as Dropdown).label
+                    }}</span>
+                    <ChevronDownIcon
+                      class="w-4 h-4"
+                      stroke-width="4"
+                    ></ChevronDownIcon>
+                  </button>
+                  <ul
+                    class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[1002] bg-white"
+                  >
+                    <template
+                      v-for="(subitem, subindex) in (item as Dropdown).items"
+                      :key="subindex"
+                    >
+                      <li
+                        v-if="checkCondition(subitem)"
+                        @click="
+                          state.activeAppUrl = (item as Link).activeAppUrl
+                        "
+                        :class="{
+                        active: (subitem as Link).activeAppUrl == state.activeAppUrl,
+                      }"
+                      >
+                        <a
+                          :href="replaceUrlsVariables(subitem.url)"
+                          class="capitalize !flex justify-center items-center"
+                        >
+                          <i
+                            v-if="subitem.icon"
+                            :class="subitem.icon"
+                            class="pr-1 block pb-[2px] subitem-icon"
+                            style="font-size: 1rem"
+                          ></i>
+                          <span class="block">{{
+                            subitem.i18n ? t(subitem.i18n) : subitem.label
+                          }}</span>
+                        </a>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </template>
+            </template>
+          </template>
+
+          <template v-else>
+            <a
+              class="nav-item"
+              :class="{ active: props.activeApp === 'catalogue' }"
+              href="/mviewer/catalogue/"
+            >
+              <div class="flex items-center">
+                <CatalogueIcon
+                  style="height: 1.3rem; width: auto"
+                ></CatalogueIcon>
+                <span>
+                  {{ t('cartotheque') }}
+                </span>
+              </div>
+            </a>
+            <a
+              class="nav-item"
+              :class="{ active: props.activeApp === 'datahub' }"
+              href="/datahub/"
+            >
+              <div class="flex items-center">
+                <DataIcon style="height: 1.3rem; width: auto"></DataIcon>
+                <span>
+                  {{ t('data') }}
+                </span>
+              </div>
+            </a>
+            <a
+              class="nav-item"
+              :class="{ active: props.activeApp === 'analyse' }"
+              href="/analyse/"
+            >
+              <div class="flex items-center">
+                <SimpleMap style="height: 1.3rem; width: auto"></SimpleMap>
+                <span>
+                  {{ t('carte_simple') }}
+                </span>
+              </div>
+            </a>
+            TEST
+            <a
+              class="nav-item"
+              :class="{ active: props.activeApp === 'mapstore' }"
+              href="/mapstore/"
+            >
+              <div class="flex items-center">
+                <ComplexMap style="height: 1.3rem; width: auto"></ComplexMap>
+                <span>
+                  {{ t('carte_evoluee') }}
+                </span>
+              </div>
+            </a>
+          </template>
+
+          <span class="text-gray-400 text-xs" v-if="isWarned">
+            <a href="/console/account/changePassword">
+              {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
+              {{ t('remaining_days_msg_part2') }}
+              {{ t('remaining_days_msg_part3') }}</a
+            ></span
+          >
+        </nav>
+      </div>
+      <div></div>
+      <div class="flex justify-center items-center mx-6">
+        <!-- Onglet Tutoriels -->
+        <template v-if="isSantegraphieConfigAvailable === true">
           <template v-for="(item, index) in state.menu" :key="index">
             <template
               v-if="
                 !item.type &&
                 checkCondition(item) &&
                 'label' in item &&
-                item.label !== 'Tutoriels'
+                item.label === 'Tutoriels'
               "
             >
               <a
@@ -226,8 +407,8 @@ onMounted(() => {
                 class="nav-item"
                 @click="state.activeAppUrl = (item as Link).activeAppUrl"
                 :class="{
-                  active: (item as Link).activeAppUrl == state.activeAppUrl,
-                }"
+                active: (item as Link).activeAppUrl == state.activeAppUrl,
+              }"
               >
                 <div class="flex items-center">
                   <img
@@ -246,109 +427,23 @@ onMounted(() => {
                 </div>
               </a>
             </template>
-            <template
-              v-else-if="(item as Separator).type === 'separator' && checkCondition(item)"
-            >
-              <span class="text-gray-400">|</span>
-            </template>
-            <template
-              v-else-if="item.type === 'dropdown' && checkCondition(item)"
-            >
-              <div class="group inline-block relative">
-                <button
-                  class="nav-item after:hover:scale-x-0 flex items-center"
-                >
-                  <span class="lg:mr-2 md:mr-1 first-letter:capitalize">{{
-                    (item as Dropdown).i18n
-                      ? t((item as Dropdown).i18n)
-                      : (item as Dropdown).label
-                  }}</span>
-                  <ChevronDownIcon
-                    class="w-4 h-4"
-                    stroke-width="4"
-                  ></ChevronDownIcon>
-                </button>
-                <ul
-                  class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[1002] bg-white"
-                >
-                  <template
-                    v-for="(subitem, subindex) in (item as Dropdown).items"
-                    :key="subindex"
-                  >
-                    <li
-                      v-if="checkCondition(subitem)"
-                      @click="state.activeAppUrl = (item as Link).activeAppUrl"
-                      :class="{
-                        active: (subitem as Link).activeAppUrl == state.activeAppUrl,
-                      }"
-                    >
-                      <a
-                        :href="replaceUrlsVariables(subitem.url)"
-                        class="capitalize !flex justify-center items-center"
-                      >
-                        <i
-                          v-if="subitem.icon"
-                          :class="subitem.icon"
-                          class="pr-1 block pb-[2px] subitem-icon"
-                          style="font-size: 1rem"
-                        ></i>
-                        <span class="block">{{
-                          subitem.i18n ? t(subitem.i18n) : subitem.label
-                        }}</span>
-                      </a>
-                    </li>
-                  </template>
-                </ul>
-              </div>
-            </template>
           </template>
-
-          <span class="text-gray-400 text-xs" v-if="isWarned">
-            <a href="/console/account/changePassword">
-              {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
-              {{ t('remaining_days_msg_part2') }}
-              {{ t('remaining_days_msg_part3') }}</a
-            ></span
+        </template>
+        <template v-else>
+          <a
+            class="nav-item"
+            :class="{ active: props.activeApp === 'analyse' }"
+            href="/analyse/"
           >
-        </nav>
-      </div>
-      <div></div>
-      <div class="flex justify-center items-center mx-6">
-        <!-- Onglet Tutoriels -->
-        <template v-for="(item, index) in state.menu" :key="index">
-          <template
-            v-if="
-              !item.type &&
-              checkCondition(item) &&
-              'label' in item &&
-              item.label === 'Tutoriels'
-            "
-          >
-            <a
-              :href="(item as Link).url"
-              class="nav-item"
-              @click="state.activeAppUrl = (item as Link).activeAppUrl"
-              :class="{
-                active: (item as Link).activeAppUrl == state.activeAppUrl,
-              }"
-            >
-              <div class="flex items-center">
-                <img
-                  v-if="(item as Link).icon"
-                  :src="(item as Link).icon"
-                  class="item-icon"
-                  style="height: 1.3rem"
-                />
-                <span class="ml-1 first-letter:capitalize">
-                  {{
-                    (item as Link).i18n
-                      ? t((item as Link).i18n)
-                      : (item as Link).label
-                  }}
-                </span>
-              </div>
-            </a>
-          </template>
+            <div class="flex items-center">
+              <TutorielsIcon
+                style="height: 1.3rem; width: auto"
+              ></TutorielsIcon>
+              <span>
+                {{ t('tutoriels') }}
+              </span>
+            </div>
+          </a>
         </template>
         <!---->
 
