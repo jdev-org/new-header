@@ -209,7 +209,6 @@ onMounted(() => {
           <template v-else>
             <SantegraphieLogo class="w-full h-12 my-auto"></SantegraphieLogo>
           </template>
-          <h4>La santé se met en cartes</h4>
         </a>
         <nav class="flex justify-center items-center font-semibold">
           <template v-for="(item, index) in state.menu" :key="index">
