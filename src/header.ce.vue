@@ -459,9 +459,6 @@ onMounted(() => {
               </div>
             </template>
           </template>
-          <a v-if="!isAnonymous" class="nav-item-mobile" href="/import/">{{
-            t('datafeeder')
-          }}</a>
         </nav>
       </div>
     </div>
