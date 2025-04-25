@@ -126,30 +126,32 @@ function toggleDropdown(index: number) {
 }
 
 onMounted(() => {
-  getUserDetails().then(user => {
-    state.user = user
-    state.config.stylesheet ??= props.stylesheet
-    if (props.configFile)
-      fetch(props.configFile)
-        .then(res => res.json())
-        .then(json => {
-          state.config = Object.assign({}, state.config, json.config)
-          if (json.menu) {
-            state.menu = json.menu
-          }
-          setI18nAndActiveApp(json.i18n)
-        })
-    else setI18nAndActiveApp()
-    if (user.roles.some(role => state.config.adminRoles.includes(role))) {
-      getPlatformInfos().then(
-        platformInfos => (state.platformInfos = platformInfos)
-      )
-    }
-  })
+  if (props.legacyHeader !== 'true') {
+    getUserDetails().then(user => {
+      state.user = user
+      state.config.stylesheet ??= props.stylesheet
+      if (props.configFile)
+        fetch(props.configFile)
+          .then(res => res.json())
+          .then(json => {
+            state.config = Object.assign({}, state.config, json.config)
+            if (json.menu) {
+              state.menu = json.menu
+            }
+            setI18nAndActiveApp(json.i18n)
+          })
+      else setI18nAndActiveApp()
+      if (user.roles.some(role => state.config.adminRoles.includes(role))) {
+        getPlatformInfos().then(
+          platformInfos => (state.platformInfos = platformInfos)
+        )
+      }
+    })
+  }
 })
 </script>
 <template>
-  <div v-if="props.legacyHeader === 'true' && state.loaded">
+  <div v-if="props.legacyHeader === 'true'">
     <iframe
       class="w-full"
       v-bind:src="`${props.legacyUrl}${
