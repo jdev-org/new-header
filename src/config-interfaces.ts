@@ -17,6 +17,8 @@ export interface Link extends MenuItem {
   activeAppUrl?: string
   //Icon to display next to the label
   icon?: string
+  //If the link is clickable
+  disabled?: boolean
 }
 
 export interface Dropdown extends MenuItem {

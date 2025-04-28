@@ -8,10 +8,9 @@
   },
   "menu": [
     {
-      "label": "Catalogue",
-      "i18n": "datahub",
-      "url": "/datahub/",
-      "activeAppUrl": "/datahub"
+      "label": "Map stuff:",
+      "url": "",
+      "disabled": true
     },
     {
       "label": "WMS/WFS",
@@ -22,6 +21,11 @@
     },
     {
       "type": "separator"
+    },
+    {
+      "label": "Administration stuff:",
+      "url": "",
+      "disabled": true
     },
     {
       "type": "dropdown",
@@ -39,8 +43,7 @@
           "i18n": "catalogue",
           "url": "/geonetwork/srv/:lang3/catalog.edit#/board",
           "activeAppUrl": "/geonetwork",
-          "hasRole": "ROLE_GN_EDITOR",
-          "blockedRole": "ROLE_SUPERUSER,ROLE_GN_REVIEWER,ROLE_GN_ADMIN"
+          "disabled": true
         }
       ]
     }

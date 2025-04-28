@@ -187,7 +187,7 @@ onMounted(() => {
     <div
       class="justify-between text-slate-600 md:flex hidden h-full bg-white md:text-sm"
     >
-      <div class="flex">
+      <div class="flex header-left">
         <a
           href="/"
           class="flex justify-center items-center lg:px-3 md:px-2 py-2"
@@ -202,7 +202,7 @@ onMounted(() => {
             <GeorchestraLogo class="w-full h-12 my-auto"></GeorchestraLogo>
           </template>
         </a>
-        <nav class="flex justify-center items-center font-semibold">
+        <nav class="flex justify-center items-center font-semibold header-nav">
           <template v-for="(item, index) in state.menu" :key="index">
             <template v-if="!item.type && checkCondition(item)">
               <a
@@ -211,6 +211,7 @@ onMounted(() => {
                 @click="state.activeAppUrl = (item as Link).activeAppUrl"
                 :class="{
                   active: (item as Link).activeAppUrl == state.activeAppUrl,
+                  disabled: (item as Link).disabled
                 }"
               >
                 <div class="flex items-center">
@@ -253,7 +254,7 @@ onMounted(() => {
                   ></ChevronDownIcon>
                 </button>
                 <ul
-                  class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[1002] bg-white"
+                  class="absolute hidden group-hover:block border rounded w-full dropdown z-[1002] bg-white"
                 >
                   <template
                     v-for="(subitem, subindex) in (item as Dropdown).items"
@@ -266,6 +267,7 @@ onMounted(() => {
                       "
                       :class="{
                         active: (subitem as Link).activeAppUrl == state.activeAppUrl,
+                        disabled: (subitem as Link).disabled
                       }"
                     >
                       <a
@@ -298,8 +300,7 @@ onMounted(() => {
           >
         </nav>
       </div>
-      <div></div>
-      <div class="flex justify-center items-center mx-6">
+      <div class="flex justify-center items-center mx-6 header-right">
         <div v-if="!isAnonymous" class="flex gap-4 items-baseline">
           <a
             class="link-btn"
@@ -393,6 +394,7 @@ onMounted(() => {
                 @click="state.activeAppUrl = (item as Link).activeAppUrl"
                 :class="{
                   active: (item as Link).activeAppUrl == state.activeAppUrl,
+                  disabled: (item as Link).disabled
                 }"
               >
                 <div class="flex items-center">
@@ -425,7 +427,7 @@ onMounted(() => {
                   ></ChevronDownIcon>
                 </button>
                 <ul
-                  class="absolute border rounded w-full admin-dropdown z-[1002] bg-white"
+                  class="absolute border rounded w-full dropdown z-[1002] bg-white"
                   v-show="state.activeDropdown === index"
                 >
                   <template
@@ -439,6 +441,7 @@ onMounted(() => {
                       "
                       :class="{
                         active: (subitem as Link).activeAppUrl == state.activeAppUrl,
+                        disabled: (subitem as Link).disabled
                       }"
                     >
                       <a
@@ -507,20 +510,20 @@ onMounted(() => {
     @apply text-primary hover:text-slate-700 hover:underline underline-offset-8 decoration-2 decoration-slate-700 flex flex-col items-center;
   }
 
-  .admin-dropdown > li {
+  .dropdown > li {
     @apply block text-center hover:bg-primary-light text-gray-700 hover:text-black capitalize;
   }
 
-  .admin-dropdown > li > a {
+  .dropdown > li > a {
     @apply block w-full h-full py-3;
   }
 
-  .admin-dropdown > li.active {
+  .dropdown > li.active {
     @apply bg-primary-light;
   }
 
-  .icon-dropdown {
-    @apply w-4 h-4 inline-block align-text-top;
+  .disabled {
+    @apply cursor-pointer pointer-events-none;
   }
 
   * {
