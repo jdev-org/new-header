@@ -45,17 +45,6 @@ const loginUrl = computed(() => {
 })
 const logoutUrl = computed(() => '/logout')
 
-function checkCondition(item: Link | Separator | Dropdown): boolean {
-  const hasRole = item.hasRole
-  if (!state.user) return false
-  if (!hasRole) return true
-  const isBlocked = item.blockedRole
-    ?.split(',')
-    .some(c => state.user?.roles?.indexOf(c) !== -1)
-  if (isBlocked) return false
-  return hasRole.split(',').some(c => state.user?.roles?.indexOf(c) !== -1)
-}
-
 function replaceUrlsVariables(url: string): string {
   return url.replace(/:lang3/, state.lang3)
 }
@@ -124,10 +113,6 @@ function setI18nAndActiveApp(i18n?: any) {
   state.loaded = true
 }
 
-const changeActivApp = (name: string, state: any) => {
-  state.activeAppUrl = name
-  console.log(state)
-}
 const dropdownVisible = ref(false)
 
 onMounted(() => {
@@ -206,9 +191,9 @@ onMounted(() => {
         <nav class="flex justify-center items-center font-semibold header-nav">
           <a
             class="nav-item"
-            :class="{ active: state.activeAppUrl === '/datahub/news' }"
+            :class="{ active: state.activeAppUrl === '/datahub' }"
             href="/datahub/news"
-            @click="changeActivApp('/datahub/news', state)"
+            @click="state.activeAppUrl = '/datahub'"
           >
             <div class="flex items-center">
               <span class="ml-1 first-letter:capitalize">
@@ -239,7 +224,7 @@ onMounted(() => {
                 <a
                   class="nav-sub-item-admin"
                   :class="{ active: state.activeAppUrl === '/geonetwork' }"
-                  href="/geonetwork/srv/fre/admin.console"
+                  href="/geonetwork/srv/fre/admin.console#/home"
                   @click="state.activeAppUrl = '/geonetwork'"
                 >
                   <div class="flex items-center">
