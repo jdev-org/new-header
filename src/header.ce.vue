@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { getUserDetails, getPlatformInfos } from './auth'
 import type { User, PlatformInfos } from './auth'
 import UserIcon from './ui/UserIcon.vue'
@@ -8,6 +8,9 @@ import ChevronDownIcon from '@/ui/ChevronDownIcon.vue'
 import { getI18n, t } from '@/i18n'
 import type { Link, Separator, Dropdown, Config } from '@/config-interfaces'
 import { defaultMenu, defaultConfig } from '@/default-config.json'
+import CatalogueIcon from './ui/CatalogIcon.vue'
+import UsersIcon from './ui/UsersIcon.vue'
+import MapIcon from './ui/MapIcon.vue'
 
 const props = defineProps<{
   activeApp?: string
@@ -121,9 +124,11 @@ function setI18nAndActiveApp(i18n?: any) {
   state.loaded = true
 }
 
-function toggleDropdown(index: number) {
-  state.activeDropdown = state.activeDropdown === index ? null : index
+const changeActivApp = (name: string, state: any) => {
+  state.activeAppUrl = name
+  console.log(state)
 }
+const dropdownVisible = ref(false)
 
 onMounted(() => {
   if (props.legacyHeader !== 'true') {
@@ -179,17 +184,13 @@ onMounted(() => {
       :is="'style'"
       v-if="!props.stylesheet && !state.config.stylesheet"
     >
-      header { --georchestra-header-primary: #85127e;
-      --georchestra-header-secondary: #1b1f3b;
-      --georchestra-header-primary-light: #85127e1a;
-      --georchestra-header-secondary-light: #1b1f3b1a; }
     </component>
     <div
       class="justify-between text-slate-600 md:flex hidden h-full bg-white md:text-sm"
     >
       <div class="flex header-left">
         <a
-          href="/"
+          href="/datahub/search"
           class="flex justify-center items-center lg:px-3 md:px-2 py-2"
         >
           <img
@@ -203,93 +204,96 @@ onMounted(() => {
           </template>
         </a>
         <nav class="flex justify-center items-center font-semibold header-nav">
-          <template v-for="(item, index) in state.menu" :key="index">
-            <template v-if="!item.type && checkCondition(item)">
-              <a
-                :href="(item as Link).url"
-                class="nav-item"
-                @click="state.activeAppUrl = (item as Link).activeAppUrl"
-                :class="{
-                  active: (item as Link).activeAppUrl == state.activeAppUrl,
-                  disabled: (item as Link).disabled
-                }"
+          <a
+            class="nav-item"
+            :class="{ active: state.activeAppUrl === '/datahub/news' }"
+            href="/datahub/news"
+            @click="changeActivApp('/datahub/news', state)"
+          >
+            <div class="flex items-center">
+              <span class="ml-1 first-letter:capitalize">
+                {{ t('catalogue') }}
+              </span>
+            </div>
+          </a>
+          <span v-if="!isAnonymous">|</span>
+          <div
+            class="relative"
+            @mouseenter="dropdownVisible = true"
+            @mouseleave="dropdownVisible = false"
+          >
+            <a v-if="!isAnonymous" class="nav-item-admin flex items-center">
+              <span class="mr-2 ml-1 first-letter:capitalize">
+                {{ t('admin') }}
+              </span>
+              <ChevronDownIcon
+                class="w-4 h-4"
+                stroke-width="4"
+              ></ChevronDownIcon>
+            </a>
+
+            <template v-if="dropdownVisible">
+              <div
+                class="dropdown-menu absolute top-full left-0 z-50 border rounded w-full bg-white flex flex-col items-center"
               >
-                <div class="flex items-center">
-                  <i
-                    v-if="(item as Link).icon"
-                    :class="(item as Link).icon"
-                    class="item-icon"
-                    style="font-size: 0.9rem"
-                  ></i>
-                  <span class="ml-1 first-letter:capitalize">
-                    {{
-                      (item as Link).i18n
-                        ? t((item as Link).i18n)
-                        : (item as Link).label
-                    }}
-                  </span>
-                </div>
-              </a>
-            </template>
-            <template
-              v-else-if="(item as Separator).type === 'separator' && checkCondition(item)"
-            >
-              <span class="text-gray-400">|</span>
-            </template>
-            <template
-              v-else-if="item.type === 'dropdown' && checkCondition(item)"
-            >
-              <div class="group inline-block relative">
-                <button
-                  class="nav-item after:hover:scale-x-0 flex items-center"
+                <a
+                  class="nav-sub-item-admin"
+                  :class="{ active: state.activeAppUrl === '/geonetwork' }"
+                  href="/geonetwork/srv/fre/admin.console"
+                  @click="state.activeAppUrl = '/geonetwork'"
                 >
-                  <span class="lg:mr-2 md:mr-1 first-letter:capitalize">{{
-                    (item as Dropdown).i18n
-                      ? t((item as Dropdown).i18n)
-                      : (item as Dropdown).label
-                  }}</span>
-                  <ChevronDownIcon
-                    class="w-4 h-4"
-                    stroke-width="4"
-                  ></ChevronDownIcon>
-                </button>
-                <ul
-                  class="absolute hidden group-hover:block border rounded w-full dropdown z-[1002] bg-white"
+                  <div class="flex items-center">
+                    <CatalogueIcon
+                      class="icon"
+                      style="height: 1.3rem; width: auto"
+                    ></CatalogueIcon>
+                    <span class="ml-1 first-letter:capitalize">
+                      {{ t('catalogue') }}
+                    </span>
+                  </div>
+                </a>
+                <a
+                  v-if="
+                    state.user?.roles?.includes(
+                      'ROLE_MAPSTORE_ADMIN',
+                      'ROLE_SUPERUSER'
+                    )
+                  "
+                  class="nav-sub-item-admin"
+                  :class="{ active: state.activeAppUrl === '/mapstore' }"
+                  href="/mapstore/#/admin"
+                  @click="state.activeAppUrl = '/mapstore'"
                 >
-                  <template
-                    v-for="(subitem, subindex) in (item as Dropdown).items"
-                    :key="subindex"
-                  >
-                    <li
-                      v-if="checkCondition(subitem)"
-                      @click="
-                        state.activeAppUrl = (subitem as Link).activeAppUrl
-                      "
-                      :class="{
-                        active: (subitem as Link).activeAppUrl == state.activeAppUrl,
-                        disabled: (subitem as Link).disabled
-                      }"
-                    >
-                      <a
-                        :href="replaceUrlsVariables(subitem.url)"
-                        class="capitalize !flex justify-center items-center"
-                      >
-                        <i
-                          v-if="subitem.icon"
-                          :class="subitem.icon"
-                          class="pr-1 block pb-[2px] subitem-icon"
-                          style="font-size: 1rem"
-                        ></i>
-                        <span class="block">{{
-                          subitem.i18n ? t(subitem.i18n) : subitem.label
-                        }}</span>
-                      </a>
-                    </li>
-                  </template>
-                </ul>
+                  <div class="flex items-center">
+                    <MapIcon
+                      class="icon"
+                      style="height: 1.3rem; width: auto"
+                    ></MapIcon>
+                    <span class="ml-1 first-letter:capitalize">
+                      {{ t('viewer') }}
+                    </span>
+                  </div>
+                </a>
+                <a
+                  v-if="state.user?.roles?.includes('ROLE_SUPERUSER')"
+                  class="nav-sub-item-admin"
+                  :class="{ active: state.activeAppUrl === '/console/manager' }"
+                  href="/console/manager/home"
+                  @click="state.activeAppUrl = '/console/manager'"
+                >
+                  <div class="flex items-center">
+                    <UsersIcon
+                      class="icon"
+                      style="height: 1.3rem; width: auto"
+                    ></UsersIcon>
+                    <span class="ml-1 first-letter:capitalize">
+                      {{ t('users') }}
+                    </span>
+                  </div>
+                </a>
               </div>
             </template>
-          </template>
+          </div>
 
           <span class="text-gray-400 text-xs" v-if="isWarned">
             <a href="/console/account/changePassword">
@@ -300,6 +304,8 @@ onMounted(() => {
           >
         </nav>
       </div>
+
+      <!-- profil -->
       <div class="flex justify-center items-center mx-6 header-right">
         <div v-if="!isAnonymous" class="flex gap-4 items-baseline">
           <a
@@ -324,6 +330,8 @@ onMounted(() => {
         >
       </div>
     </div>
+
+    <!-- mobile -->
     <div class="flex-col md:hidden w-full h-full">
       <div
         class="h-full inline-flex items-center justify-start align-middle px-6 py-8 shrink-0 w-full bg-primary/10"
@@ -373,7 +381,9 @@ onMounted(() => {
             <a class="link-btn" href="/console/account/userdetails">
               <UserIcon class="font-bold text-3xl inline-block mr-4"></UserIcon>
               <span>{{
-                `${state.user?.firstname} ${state.user?.lastname}`
+                `${state.user?.firstname?.charAt(0) ?? ''}${
+                  state.user?.lastname ?? ''
+                }`
               }}</span></a
             >
             <a class="link-btn" :href="logoutUrl">{{ t('logout') }}</a>
@@ -386,84 +396,95 @@ onMounted(() => {
         class="absolute z-[1000] bg-white w-full duration-300 transition-opacity ease-in-out"
       >
         <nav class="flex flex-col font-semibold" v-if="state.mobileMenuOpen">
-          <template v-for="(item, index) in state.menu" :key="index">
-            <template v-if="!item.type && checkCondition(item)">
-              <a
-                :href="(item as Link).url"
-                class="nav-item-mobile"
-                @click="state.activeAppUrl = (item as Link).activeAppUrl"
-                :class="{
-                  active: (item as Link).activeAppUrl == state.activeAppUrl,
-                  disabled: (item as Link).disabled
-                }"
+          <a
+            class="nav-item-mobile"
+            :class="{ active: state.activeAppUrl === '/datahub' }"
+            href="/datahub/news"
+            @click="state.activeAppUrl = '/datahub'"
+          >
+            <div class="flex items-center">
+              <span class="ml-1 first-letter:capitalize">
+                {{ t('catalogue') }}
+              </span>
+            </div>
+          </a>
+          <!-- <div
+            class="relative"
+            @mouseenter="dropdownVisible = true"
+            @mouseleave="dropdownVisible = false"
+          >
+            <a v-if="!isAnonymous" class="nav-item-mobile flex items-center ">
+              <span class="mr-2 ml-1 first-letter:capitalize">
+                {{ t('admin') }}
+              </span>
+              <ChevronDownIcon
+                class="w-4 h-4"
+                stroke-width="4"
+              ></ChevronDownIcon>
+            </a>
+
+            <template v-if="dropdownVisible">
+              <div
+                class="dropdown-menu absolute top-full left-0 z-50 border rounded w-full bg-white flex flex-col items-center"
               >
-                <div class="flex items-center">
-                  <span class="ml-1 first-letter:capitalize">
-                    {{
-                      (item as Link).i18n
-                        ? t((item as Link).i18n)
-                        : (item as Link).label
-                    }}
-                  </span>
-                </div>
-              </a>
-            </template>
-            <template
-              v-else-if="item.type === 'dropdown' && checkCondition(item)"
-            >
-              <div class="group inline-block relative">
-                <button
-                  class="nav-item-mobile after:hover:scale-x-0 flex items-center"
-                  @click="toggleDropdown(index)"
+                <a
+                  class="nav-sub-item-admin"
+                  :class="{ active: state.activeAppUrl === '/geonetwork' }"
+                  href="/geonetwork/srv/fre/admin.console"
+                  @click="state.activeAppUrl = '/geonetwork'"
                 >
-                  <span class="lg:mr-2 md:mr-1 first-letter:capitalize">{{
-                    (item as Dropdown).i18n
-                      ? t((item as Dropdown).i18n)
-                      : (item as Dropdown).label
-                  }}</span>
-                  <ChevronDownIcon
-                    class="w-4 h-4"
-                    stroke-width="4"
-                  ></ChevronDownIcon>
-                </button>
-                <ul
-                  class="absolute border rounded w-full dropdown z-[1002] bg-white"
-                  v-show="state.activeDropdown === index"
+                  <div class="flex items-center">
+                    <CatalogueIcon
+                      class="icon"
+                      style="height: 1.3rem; width: auto"
+                    ></CatalogueIcon>
+                    <span class="ml-1 first-letter:capitalize">
+                      {{ t('catalogue') }}
+                    </span>
+                  </div>
+                </a>
+                <a
+                  v-if="
+                    state.user?.roles?.includes(
+                      'ROLE_MAPSTORE_ADMIN',
+                      'ROLE_SUPERUSER'
+                    )
+                  "
+                  class="nav-sub-item-admin"
+                  :class="{ active: state.activeAppUrl === '/mapstore' }"
+                  href="/mapstore/#/admin"
+                  @click="state.activeAppUrl = '/mapstore'"
                 >
-                  <template
-                    v-for="(subitem, subindex) in (item as Dropdown).items"
-                    :key="subindex"
-                  >
-                    <li
-                      v-if="checkCondition(subitem)"
-                      @click="
-                        state.activeAppUrl = (subitem as Link).activeAppUrl
-                      "
-                      :class="{
-                        active: (subitem as Link).activeAppUrl == state.activeAppUrl,
-                        disabled: (subitem as Link).disabled
-                      }"
-                    >
-                      <a
-                        :href="replaceUrlsVariables(subitem.url)"
-                        class="capitalize !flex justify-center items-center"
-                      >
-                        <i
-                          v-if="subitem.icon"
-                          :class="subitem.icon"
-                          class="pr-1 block pb-[2px] subitem-icon"
-                          style="font-size: 1rem"
-                        ></i>
-                        <span class="block">{{
-                          subitem.i18n ? t(subitem.i18n) : subitem.label
-                        }}</span>
-                      </a>
-                    </li>
-                  </template>
-                </ul>
+                  <div class="flex items-center">
+                    <MapIcon
+                      class="icon"
+                      style="height: 1.3rem; width: auto"
+                    ></MapIcon>
+                    <span class="ml-1 first-letter:capitalize">
+                      {{ t('viewer') }}
+                    </span>
+                  </div>
+                </a>
+                <a
+                  v-if="state.user?.roles?.includes('ROLE_SUPERUSER')"
+                  class="nav-sub-item-admin"
+                  :class="{ active: state.activeAppUrl === '/console/manager' }"
+                  href="/console/manager/home"
+                  @click="state.activeAppUrl = '/console/manager'"
+                >
+                  <div class="flex items-center">
+                    <UsersIcon
+                      class="icon"
+                      style="height: 1.3rem; width: auto"
+                    ></UsersIcon>
+                    <span class="ml-1 first-letter:capitalize">
+                      {{ t('users') }}
+                    </span>
+                  </div>
+                </a>
               </div>
             </template>
-          </template>
+          </div> -->
         </nav>
       </div>
     </div>
@@ -475,12 +496,44 @@ onMounted(() => {
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Amaranth';
+  src: url('/assets/fonts/Amaranth-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Amaranth';
+  src: url('/assets/fonts/Amaranth-bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+header {
+  --georchestra-header-primary: #142e71;
+  --georchestra-header-secondary: #164193;
+  --georchestra-header-primary-light: white;
+  --georchestra-header-secondary-light: #eee;
+}
+
 .host {
   -webkit-text-size-adjust: 100%;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-family: 'Amaranth', ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
   font-feature-settings: normal;
+}
+
+.btn:hover {
+  background-color: var(--georchestra-header-secondary);
+}
+
+header nav .nav-item,
+header nav .nav-item-admin,
+header nav .nav-item.active {
+  color: var(--georchestra-header-primary);
 }
 
 @layer components {
@@ -488,10 +541,26 @@ onMounted(() => {
     @apply text-xl block text-center py-3 w-full border-b border-b-slate-300 first-letter:capitalize;
     display: flex;
     justify-content: center;
+    font-family: 'Amaranth', sans-serif;
+    font-weight: bold;
   }
 
   .nav-item {
     @apply relative text-lg w-fit block after:hover:scale-x-100 lg:mx-3 md:mx-2 hover:text-black first-letter:capitalize text-base;
+    font-family: 'Amaranth', sans-serif;
+    font-weight: bold;
+  }
+
+  .nav-item-admin {
+    @apply relative text-lg w-fit block after:hover:scale-x-100 lg:mx-3 md:mx-2 hover:text-black first-letter:capitalize;
+    font-family: 'Amaranth', sans-serif;
+    font-weight: bold;
+  }
+
+  .nav-sub-item-admin {
+    @apply relative text-lg w-fit block my-2 after:hover:scale-x-100 lg:mx-3 md:mx-2 hover:text-black first-letter:capitalize;
+    font-family: 'Amaranth', sans-serif;
+    font-weight: bold;
   }
 
   .nav-item:after {
