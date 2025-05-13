@@ -239,9 +239,8 @@ onMounted(() => {
                 </a>
                 <a
                   v-if="
-                    state.user?.roles?.includes(
-                      'ROLE_MAPSTORE_ADMIN',
-                      'ROLE_SUPERUSER'
+                    ['ROLE_MAPSTORE_ADMIN', 'ROLE_SUPERUSER'].some(role =>
+                      state.user?.roles?.includes(role)
                     )
                   "
                   class="nav-sub-item-admin"
