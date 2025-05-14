@@ -45,6 +45,7 @@ export interface Config {
   //Force header's language
   lang?: string
   //List of roles considered as admin roles, if admin, triggers a request to /console/private/platform/infos
-  adminRoles: string[],
+  adminRoles: string[]
+  //List of fonts urls used in the header
   fontsUrls: string[]
 }

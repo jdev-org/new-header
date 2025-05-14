@@ -140,14 +140,27 @@ onMounted(() => {
             }
             setI18nAndActiveApp(json.i18n)
 
-            for (const fontsUrl of state.config.fontsUrls) {
-              fetch(fontsUrl)
-                .then(r => r.text())
-                .then(css => {
-                  const style = document.createElement('style')
-                  style.textContent = css
-                  document.head.appendChild(style)
-                })
+            for (const fontUrl of state.config.fontsUrls) {
+              if (fontUrl.startsWith('http')) {
+                const link = document.createElement('link')
+                link.rel = 'stylesheet'
+                link.href = fontUrl
+                document.head.appendChild(link)
+              } else {
+                const fontName =
+                  fontUrl.split('/').pop()?.split('.')[0].split(/[-_]/)[0] ||
+                  'CustomFont'
+                const style = document.createElement('style')
+                style.textContent = `
+                  @font-face {
+                    font-family: '${fontName}';
+                    src: url('${fontUrl}') format('truetype');
+                    font-weight: 400;
+                    font-style: normal;
+                  }
+                `
+                document.head.appendChild(style)
+              }
             }
           })
       else setI18nAndActiveApp()
