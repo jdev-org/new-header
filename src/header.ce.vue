@@ -139,6 +139,16 @@ onMounted(() => {
               state.menu = json.menu
             }
             setI18nAndActiveApp(json.i18n)
+
+            for (const fontsUrl of state.config.fontsUrls) {
+              fetch(fontsUrl)
+                .then(r => r.text())
+                .then(css => {
+                  const style = document.createElement('style')
+                  style.textContent = css
+                  document.head.appendChild(style)
+                })
+            }
           })
       else setI18nAndActiveApp()
       if (user.roles.some(role => state.config.adminRoles.includes(role))) {

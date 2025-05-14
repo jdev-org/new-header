@@ -1,0 +1,110 @@
+/* Custom stylesheet for georchestra header */
+
+body {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-optical-sizing: auto;
+}
+
+header {
+	--georchestra-header-primary: #062c4c;
+	--georchestra-header-secondary: #094b6c;
+	--georchestra-header-primary-light: white;
+	--georchestra-header-secondary-light: #eee;
+}
+
+header.host {
+    font-family: "Anton", sans-serif;
+}
+
+/* Logo size */
+header img[alt="geOrchestra logo"] {
+    width: 200px!important; /* wazs 180px */
+}
+
+/*Style for btn connect */
+header .btn{
+    border-radius: 2em!important;
+    font-size: 15px;
+    padding: 10px 20px;
+}
+
+header .link-btn[href="/logout"]{
+    border-radius: 2em!important;
+    font-size: 15px;
+    padding: 10px 20px;
+    background: var(--georchestra-header-primary);
+    color: white;
+    text-decoration: none;
+}
+
+header .link-btn[href="/logout"]:hover{
+    --tw-bg-opacity: 1;
+    background-color: rgb(51 65 85 / var(--tw-bg-opacity));
+}
+
+/* Font for nav item*/
+header .nav-item {
+    font-size: 15px;
+    font-weight: 500 !important;
+}
+
+/* for icon size */
+header .item-icon {
+    font-size: 1.5rem !important;
+}
+
+header .subitem-icon {
+    font-size: 1.2rem !important;
+}
+
+@media (min-width: 640px) {
+    header>div>div:first-child{
+        justify-content: space-between;
+        width: 70%;
+    }
+ }
+
+ header .nav-item.active {
+    background-color: var(--georchestra-header-primary)!important;
+    color: var(--georchestra-header-primary-light) !important;
+    border-radius: 2em !important;
+    padding: 10px 20px;
+}
+
+header .nav-item.active:hover {
+    background-color: color-mix(in srgb, var(--georchestra-header-primary) 80%, transparent)!important;
+}
+
+.nav-item.active::after {
+    --tw-scale-x: 0;
+}
+
+.admin-dropdown {
+    border-radius: .8em!important;
+    font-weight: 500;
+}
+
+.admin-dropdown>li {
+    text-align: left!important;
+    padding: 0 1em;
+    transition: 0.3s;
+}
+.admin-dropdown>li:first-child {
+    border-top-right-radius: .8em!important;
+    border-top-left-radius: .8em!important;
+}
+
+.admin-dropdown>li:last-child {
+    border-bottom-right-radius: .8em!important;
+    border-bottom-left-radius: .8em!important;
+}
+
+.admin-dropdown>li:hover {
+    background-color: #062c4c0c;
+}
+
+.admin-dropdown>li>a {
+    justify-content: flex-start!important;
+}
