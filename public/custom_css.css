@@ -1,7 +1,7 @@
 /* Custom stylesheet for georchestra header */
 
 body {
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Marianne', sans-serif;
   font-weight: 400;
   font-style: normal;
   font-optical-sizing: auto;
@@ -15,7 +15,7 @@ header {
 }
 
 header.host {
-    font-family: "Quicksand", sans-serif;
+    font-family: "Marianne", sans-serif;
 }
 
 /* Logo size */

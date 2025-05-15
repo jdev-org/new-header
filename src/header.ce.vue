@@ -150,14 +150,14 @@ onMounted(() => {
                 const fontName =
                   fontUrl.split('/').pop()?.split('.')[0].split(/[-_]/)[0] ||
                   'CustomFont'
+                const extension = fontUrl.split('.').pop()
                 const style = document.createElement('style')
                 style.textContent = `
                   @font-face {
                     font-family: '${fontName}';
-                    src: url('${fontUrl}') format('truetype');
-                    font-weight: 400;
-                    font-style: normal;
-                  }
+                    src: url('${fontUrl}') format('${
+                  extension === 'ttf' ? 'truetype' : extension
+                }');
                 `
                 document.head.appendChild(style)
               }
