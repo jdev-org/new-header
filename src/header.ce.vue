@@ -150,7 +150,12 @@ onMounted(() => {
                 const fontName =
                   fontUrl.split('/').pop()?.split('.')[0].split(/[-_]/)[0] ||
                   'CustomFont'
-                const extension = fontUrl.split('.').pop()
+                const regex = /\.(woff2?|ttf|otf|eot)(?=([?#/]|$))/i
+                const match = fontUrl.match(regex)
+                let extension = ''
+                if (match) {
+                  extension = match[1]
+                }
                 const style = document.createElement('style')
                 style.textContent = `
                   @font-face {

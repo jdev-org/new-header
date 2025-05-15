@@ -94,9 +94,9 @@ Example :
 
 - How to use them in you project
 
-In your custom stylesheet use the fonts you import :
+@font-face will be auto generated. To customise a font properties you just need to edit your stylesheet by adding style rules.
 
-Example :
+Example with Amaranth font added with fontsUrls parameter :
 ```
 body {
   font-family: 'Amaranth', sans-serif;
@@ -104,9 +104,46 @@ body {
   font-style: normal;
   font-optical-sizing: auto;
 }
+
+h1 {
+  font-family: 'Amaranth', sans-serif;
+  font-weight: 700;
+  font-style: bold;
+  font-optical-sizing: auto;
+}
 ```
 
-No need of @font-face, it's auto generated.
+For fonts downloaded like `Quicksand-Regular.ttf`, it is necessary to have imported each file for each desired variable.
+Example for Quicksand variables :
+
+```
+/Quicksand-Regular.ttf
+/Quicksand-Bold.ttf
+/Quicksand-Italic.ttf
+...
+```
+
+and customize your elements with what you need in stylesheet
+
+```
+body {
+  font-family: 'Quicksand', sans-serif;
+  font-style: normal;
+  font-optical-sizing: auto;
+}
+
+h1 {
+  font-family: 'Quicksand', sans-serif;
+  font-style: bold;
+  font-optical-sizing: auto;
+}
+
+citation {
+  font-family: 'Quicksand', sans-serif;
+  font-style: italic;
+  font-optical-sizing: auto;
+}
+```
 
 ### Project Setup
 
