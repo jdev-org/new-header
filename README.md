@@ -41,6 +41,7 @@ Attributes available :
 | legacy-header | Use this attribute to enable the legacy header `iframe` tag. Needs `legacy-url`.                     | `<geor-header legacy-header='true' legacy-url="/header/">`                  |          | v          |
 | legacy-url    | Legacy URL: if set, activates iframe with src attribute pointing to this URL. Needs `legacy-header`. | `<geor-header legacy-header='true' legacy-url="/header/"></geor-header>`    |          | v          |
 | logo-url      | Use this attribute to set the logo for the new header (not legacy one).                              | `<geor-header logo-url='https://linktomylogo.com'>`                         | v        |            |
+| fontUrls      | Use this attribute to get external or local fonts  (not legacy one).                                 | `"fontsUrls": ["/Quicksand-Regular.ttf", "https://fonts.googleapis.com/css2?family=Amaranth:ital,wght@0,400;0,700;1,400;1,700&display=swap", "/Marianne-Regular.woff"],`               |v               |
 
 3. Provide a custom stylesheet
 
@@ -71,6 +72,41 @@ On every new commit on main the `header.js` file on the `dist` branch is updated
 ### Customize configuration
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
+
+### Use customize fonts
+
+You can import fonts by CDN or path by adding their urls in `fontsUrls` in your config file (sample-config.json by default).
+`fontsUrls` is an array of urls string.
+You can add any fonts urls as seen in params array above.
+
+Example :
+
+```
+"config": {
+    "stylesheet": "/custom_css.css",
+    "logoUrl": "",
+    "fontsUrls": ["/Quicksand-Regular.ttf", "https://fonts.googleapis.com/css2?family=Amaranth:ital,wght@0,400;0,700;1,400;1,700&family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap", "/Marianne-Regular.woff"],
+    "hideLogin": false,
+    "iconsUrl": "https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css",
+    "lang": "fr"
+  },
+```
+
+- How to use them in you project
+
+In your custom stylesheet use the fonts you import :
+
+Example :
+```
+body {
+  font-family: 'Amaranth', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-optical-sizing: auto;
+}
+```
+
+No need of @font-face, it's auto generated.
 
 ### Project Setup
 
