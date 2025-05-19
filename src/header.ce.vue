@@ -219,7 +219,7 @@ onMounted(() => {
 
             <template v-if="dropdownVisible">
               <div
-                class="dropdown-menu absolute top-full left-0 z-50 border rounded w-full bg-white flex flex-col items-center"
+                class="dropdown-menu absolute top-full left-0 border rounded w-full bg-white flex flex-col items-center z-[1000]"
               >
                 <a
                   class="nav-sub-item-admin"
@@ -299,7 +299,9 @@ onMounted(() => {
           >
             <UserIcon class="font-bold text-3xl inline-block"></UserIcon>
             <span class="text-xs max-w-[120px] truncate">{{
-              `${state.user?.firstname} ${state.user?.lastname}`
+              `${state.user?.firstname?.charAt(0)}${
+                state.user?.lastname
+              }`.toUpperCase()
             }}</span></a
           >
           <a class="link-btn" :href="logoutUrl"
