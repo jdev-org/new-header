@@ -115,11 +115,43 @@ function setI18nAndActiveApp(i18n?: any) {
 
 const dropdownVisible = ref(false)
 
+const fontsUrls = [
+  'assets/fonts/Amaranth-Regular.ttf',
+  'assets/fonts/Amaranth-Bold.ttf',
+]
+
 onMounted(() => {
   if (props.legacyHeader !== 'true') {
     getUserDetails().then(user => {
       state.user = user
       state.config.stylesheet ??= props.stylesheet
+      for (const fontUrl of fontsUrls) {
+        if (fontUrl.startsWith('http')) {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = fontUrl
+          document.head.appendChild(link)
+        } else {
+          const fontName =
+            fontUrl.split('/').pop()?.split('.')[0].split(/[-_]/)[0] ||
+            'CustomFont'
+          const regex = /\.(woff2?|ttf|otf|eot)(?=([?#/]|$))/i
+          const match = fontUrl.match(regex)
+          let extension = ''
+          if (match) {
+            extension = match[1]
+          }
+          const style = document.createElement('style')
+          style.textContent = `
+                  @font-face {
+                    font-family: '${fontName}';
+                    src: url('${fontUrl}') format('${
+            extension === 'ttf' ? 'truetype' : extension
+          }');
+        `
+          document.head.appendChild(style)
+        }
+      }
       if (props.configFile)
         fetch(props.configFile)
           .then(res => res.json())
@@ -394,83 +426,6 @@ onMounted(() => {
               </span>
             </div>
           </a>
-          <!-- <div
-            class="relative"
-            @mouseenter="dropdownVisible = true"
-            @mouseleave="dropdownVisible = false"
-          >
-            <a v-if="!isAnonymous" class="nav-item-mobile flex items-center ">
-              <span class="mr-2 ml-1 first-letter:capitalize">
-                {{ t('admin') }}
-              </span>
-              <ChevronDownIcon
-                class="w-4 h-4"
-                stroke-width="4"
-              ></ChevronDownIcon>
-            </a>
-
-            <template v-if="dropdownVisible">
-              <div
-                class="dropdown-menu absolute top-full left-0 z-50 border rounded w-full bg-white flex flex-col items-center"
-              >
-                <a
-                  class="nav-sub-item-admin"
-                  :class="{ active: state.activeAppUrl === '/geonetwork' }"
-                  href="/geonetwork/srv/fre/admin.console"
-                  @click="state.activeAppUrl = '/geonetwork'"
-                >
-                  <div class="flex items-center">
-                    <CatalogueIcon
-                      class="icon"
-                      style="height: 1.3rem; width: auto"
-                    ></CatalogueIcon>
-                    <span class="ml-1 first-letter:capitalize">
-                      {{ t('catalogue') }}
-                    </span>
-                  </div>
-                </a>
-                <a
-                  v-if="
-                    state.user?.roles?.includes(
-                      'ROLE_MAPSTORE_ADMIN',
-                      'ROLE_SUPERUSER'
-                    )
-                  "
-                  class="nav-sub-item-admin"
-                  :class="{ active: state.activeAppUrl === '/mapstore' }"
-                  href="/mapstore/#/admin"
-                  @click="state.activeAppUrl = '/mapstore'"
-                >
-                  <div class="flex items-center">
-                    <MapIcon
-                      class="icon"
-                      style="height: 1.3rem; width: auto"
-                    ></MapIcon>
-                    <span class="ml-1 first-letter:capitalize">
-                      {{ t('viewer') }}
-                    </span>
-                  </div>
-                </a>
-                <a
-                  v-if="state.user?.roles?.includes('ROLE_SUPERUSER')"
-                  class="nav-sub-item-admin"
-                  :class="{ active: state.activeAppUrl === '/console/manager' }"
-                  href="/console/manager/home"
-                  @click="state.activeAppUrl = '/console/manager'"
-                >
-                  <div class="flex items-center">
-                    <UsersIcon
-                      class="icon"
-                      style="height: 1.3rem; width: auto"
-                    ></UsersIcon>
-                    <span class="ml-1 first-letter:capitalize">
-                      {{ t('users') }}
-                    </span>
-                  </div>
-                </a>
-              </div>
-            </template>
-          </div> -->
         </nav>
       </div>
     </div>
@@ -481,20 +436,6 @@ onMounted(() => {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-  font-family: 'Amaranth';
-  src: url('/assets/fonts/Amaranth-regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Amaranth';
-  src: url('/assets/fonts/Amaranth-bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-}
 
 header {
   --georchestra-header-primary: #142e71;
